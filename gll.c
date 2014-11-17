@@ -1,9 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "ll_defs.h"
+#include "gll_defs.h"
 
-int addNode(void *data, int pos, HeadType **list) {
+LinkedListType *gll_init() {
+  LinkedListType *list = (LinkedListType *) malloc(sizeof(LinkedListType));
+  list->size = 0;
+  list->first = NULL;
+  list->last = NULL;
+}
+
+int gll_add(void *data, int pos, LinkedListType **list) {
 
   //if the position is out of range
   if(pos > (*list)->size || pos < 0)
@@ -80,7 +87,7 @@ int addNode(void *data, int pos, HeadType **list) {
   return C_OK;  
 }
 
-int removeNode(int pos, HeadType **list) {
+int gll_remove(int pos, LinkedListType **list) {
   //pos is out of range
   if(pos >= (*list)->size)
     return C_NOK;
@@ -93,7 +100,7 @@ int removeNode(int pos, HeadType **list) {
 
   //remove last remaining node
   if( (*list)->size == 1) {
-    deallocNode((*list)->first);  
+    gll_deallocNode((*list)->first);  
     (*list)->first = NULL;
     (*list)->last = NULL;
 
@@ -106,7 +113,7 @@ int removeNode(int pos, HeadType **list) {
     currNode = (*list)->first;    
     (*list)->first = currNode->next;
     (*list)->first->prev = NULL;
-    deallocNode(currNode);
+    gll_deallocNode(currNode);
 
     (*list)->size--;
     return C_OK;
@@ -117,7 +124,7 @@ int removeNode(int pos, HeadType **list) {
     currNode = (*list)->last;
     (*list)->last = currNode->prev;
     (*list)->last->next = NULL;
-    deallocNode(currNode);
+    gll_deallocNode(currNode);
 
     (*list)->size--;
     return C_OK;
@@ -149,13 +156,13 @@ int removeNode(int pos, HeadType **list) {
 
   currNode->prev->next = currNode->next;
   currNode->next->prev = currNode->prev;
-  deallocNode(currNode);
+  gll_deallocNode(currNode);
 
   (*list)->size--;
   return C_OK;
 }
 
-void each(void (*f)(void *), HeadType **list) {
+void gll_each(void (*f)(void *), LinkedListType **list) {
   NodeType *currNode = (*list)->first;
 
   while(currNode != NULL) {
@@ -164,17 +171,19 @@ void each(void (*f)(void *), HeadType **list) {
   }
 }
 
-void deallocNode(NodeType *node) {
+void gll_deallocNode(NodeType *node) {
   free(node);
 }
 
-void deallocList(HeadType **list) {
+void gll_deallocList(LinkedListType **list) {
   NodeType *currNode = (*list)->first;
   NodeType *nextNode;
   
   while(currNode != NULL) {
     nextNode = currNode->next;
-    deallocNode(currNode);
+    gll_deallocNode(currNode);
     currNode = nextNode;  
   }
+
+  free(*list);
 } 
