@@ -19,6 +19,6 @@ NodeType *gll_findNode(int, LinkedListType *);
 int gll_add(void *, int, LinkedListType *);
 int gll_remove(int, LinkedListType *);
 void gll_each(void (*f)(void *), LinkedListType *);
+void gll_eachReverse(void (*f)(void *), LinkedListType *);
 void gll_deallocNode(NodeType *);
 void gll_deallocList(LinkedListType *);
-

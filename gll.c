@@ -45,7 +45,6 @@ NodeType *gll_findNode(int pos, LinkedListType *list) {
 }
 
 int gll_add(void *data, int pos, LinkedListType *list) {
-
   if(pos > list->size || pos < 0)
     return C_NOK;
 
@@ -58,7 +57,7 @@ int gll_add(void *data, int pos, LinkedListType *list) {
   newNode->prev = NULL;
   newNode->next = NULL;
 
-  //list is empty
+  //if list is empty
   if(list->size == 0) {
     list->first = newNode;
     list->last = newNode;
@@ -67,6 +66,7 @@ int gll_add(void *data, int pos, LinkedListType *list) {
     return C_OK;
   }
   
+  //if list is note empty
   currNode = gll_findNode(pos, list);
 
   //adding at the front or in the middle
@@ -74,12 +74,11 @@ int gll_add(void *data, int pos, LinkedListType *list) {
     newNode->prev = currNode->prev;
     newNode->next = currNode;  
     
-    if(currNode->prev == NULL) {
+    if(currNode->prev == NULL) 
       list->first = newNode;
-    }
-    else {
+    else
       currNode->prev->next = newNode;
-    }
+
     currNode->prev = newNode;
   } 
   //adding at the end
@@ -94,7 +93,6 @@ int gll_add(void *data, int pos, LinkedListType *list) {
 }
 
 int gll_remove(int pos, LinkedListType *list) {
-  
   NodeType *currNode = gll_findNode(pos, list);
 
   //element not found
@@ -122,6 +120,15 @@ void gll_each(void (*f)(void *), LinkedListType *list) {
   while(currNode != NULL) {
     (*f)(currNode->data);
     currNode = currNode->next;
+  }
+}
+
+void gll_eachReverse(void (*f)(void *), LinkedListType *list) {
+  NodeType *currNode = list->last;
+
+  while(currNode != NULL) {
+    (*f)(currNode->data);
+    currNode = currNode->prev;
   }
 }
 
