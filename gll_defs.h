@@ -15,6 +15,7 @@ typedef struct {
 
 LinkedListType *gll_init();
 void *gll_get(int, LinkedListType *);
+NodeType *gll_findNode(int, LinkedListType *);
 int gll_add(void *, int, LinkedListType *);
 int gll_remove(int, LinkedListType *);
 void gll_each(void (*f)(void *), LinkedListType *);

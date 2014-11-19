@@ -11,45 +11,41 @@ LinkedListType *gll_init() {
 }
 
 void *gll_get(int pos, LinkedListType *list) {
-  if(pos >= list->size)
-    return NULL;
-  
-  int reverse;
-  int currPos;
-  NodeType *currNode;
-  NodeType *prevNode;
+  return gll_findNode(pos, list)->data;
+}
 
-  if(pos > (list->size / 2)) {
-    reverse = 1;
+NodeType *gll_findNode(int pos, LinkedListType *list) {
+  if(pos > list->size || pos < 0)
+    return NULL;  
+
+  NodeType *currNode;
+  int currPos;
+  int reverse;
+  
+  if(pos > ((list->size-1) / 2)) {
+    reverse  = 1;
+    currPos  = list->size - 1;
     currNode = list->last;
-    currPos = list->size - 1; 
   }
   else {
-    reverse = 0;
+    reverse  = 0;
+    currPos  = 0;
     currNode = list->first;
-    currPos = 0;
-  } 
-  
-  //return first node
-  if(pos == 0) {
-    return list->first->data;
-  }
+  }  
 
   while(currNode != NULL) {
     if(currPos == pos)
       break;
 
-    currPos = (reverse ? (currPos - 1) : (currPos + 1));
-    prevNode = currNode;
     currNode = (reverse ? (currNode->prev) : (currNode->next));
-  }       
+    currPos  = (reverse ? (currPos-1) : (currPos+1));
+  }
 
-  return currNode->data;
+  return currNode;
 }
 
 int gll_add(void *data, int pos, LinkedListType *list) {
 
-  //if the position is out of range
   if(pos > list->size || pos < 0)
     return C_NOK;
 
@@ -70,58 +66,31 @@ int gll_add(void *data, int pos, LinkedListType *list) {
     list->size++;
     return C_OK;
   }
+  
+  currNode = gll_findNode(pos, list);
 
-  //add in position 0
-  if(pos == 0) {
-    list->first->prev = newNode;
-    newNode->next = list->first;
-    list->first = newNode;
-
-    list->size++;
-    return C_OK;
-  }
-     
-  //add in last position
-  if(pos == list->size) {
+  //adding at the front or in the middle
+  if(currNode != NULL) {
+    newNode->prev = currNode->prev;
+    newNode->next = currNode;  
+    
+    if(currNode->prev == NULL) {
+      list->first = newNode;
+    }
+    else {
+      currNode->prev->next = newNode;
+    }
+    currNode->prev = newNode;
+  } 
+  //adding at the end
+  else {
     list->last->next = newNode;
     newNode->prev = list->last;
-    list->last = newNode;
-
-    list->size++;
-    return C_OK;
+    list->last = newNode;    
   }
-
-  //add somewhere in the middle of the list
-  int currPos;
-  int reverse;
- 
-  //decide whether to traverse forward or backward
-  if( pos <= (list->size / 2) ) {
-    currNode = list->first;
-    reverse = 0;
-    currPos = 0;
-  }
-  else {
-    currNode = list->last;
-    reverse = 1;
-    currPos = list->size-1;
-  }
-
-  while(currNode != NULL) {
-    if(currPos == pos)
-      break;
-
-    currPos = (reverse) ? (currPos - 1) : (currPos + 1);
-    currNode = (reverse) ? currNode->prev : currNode->next;
-  }
-
-  currNode->prev->next = newNode;
-  newNode->prev = currNode->prev;
-  newNode->next = currNode;
-  currNode->prev = newNode;
-
+  
   list->size++;
-  return C_OK;  
+  return C_OK;
 }
 
 int gll_remove(int pos, LinkedListType *list) {
