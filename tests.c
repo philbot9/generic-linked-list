@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
   int correct[10];
 
   printf("Adding: %d\n", data[0]);
-  gll_add(&data[0], 0, &list);  
+  gll_add(&data[0], 0, list);  
   printf("List:   "); 
   printList(list);
   
@@ -46,7 +46,7 @@ int main(int argc, char *argv[]) {
   printf("\n");
 
   printf("Adding: %d\n", data[1]);
-  gll_add(&data[1], 1, &list);  
+  gll_add(&data[1], 1, list);  
   printf("List:   "); 
   printList(list);
   
@@ -57,7 +57,7 @@ int main(int argc, char *argv[]) {
 
 
   printf("Adding: %d\n", data[2]);
-  gll_add(&data[2], 2, &list);
+  gll_add(&data[2], 2, list);
   printf("List:   ");
   printList(list);
 
@@ -69,7 +69,7 @@ int main(int argc, char *argv[]) {
 
 
   printf("Adding: %d\n", data[3]);
-  gll_add(&data[3], 3, &list);
+  gll_add(&data[3], 3, list);
   printf("List:   ");
   printList(list);
 
@@ -82,7 +82,7 @@ int main(int argc, char *argv[]) {
 
 
   printf("Adding: %d\n", data[4]);
-  gll_add(&data[4], 2, &list);
+  gll_add(&data[4], 2, list);
   printf("List:   ");
   printList(list);
 
@@ -97,7 +97,7 @@ int main(int argc, char *argv[]) {
 
 
   printf("Adding: %d\n", data[5]);
-  gll_add(&data[5], 99, &list);
+  gll_add(&data[5], 99, list);
   printf("List:   ");
   printList(list);
 
@@ -111,7 +111,7 @@ int main(int argc, char *argv[]) {
 
 
   printf("Adding: %d\n", data[5]);
-  gll_add(&data[5], 0, &list);
+  gll_add(&data[5], 0, list);
   printf("List:   ");
   printList(list);
 
@@ -127,7 +127,7 @@ int main(int argc, char *argv[]) {
 
 
   printf("Adding: %d\n", data[6]);
-  gll_add(&data[6], 3, &list);
+  gll_add(&data[6], 3, list);
   printf("List:   ");
   printList(list);
 
@@ -143,7 +143,7 @@ int main(int argc, char *argv[]) {
 
 
   printf("Adding: %d\n", data[7]);
-  gll_add(&data[7], 4, &list);
+  gll_add(&data[7], 4, list);
   printf("List:   ");
   printList(list);
 
@@ -160,7 +160,7 @@ int main(int argc, char *argv[]) {
 
 
   printf("Adding: %d\n", data[8]);
-  gll_add(&data[8], 1, &list);
+  gll_add(&data[8], 1, list);
   printf("List:   ");
   printList(list);
 
@@ -178,7 +178,7 @@ int main(int argc, char *argv[]) {
 
 
   printf("Adding: %d\n", data[9]);
-  gll_add(&data[9], 4, &list);
+  gll_add(&data[9], 4, list);
   printf("List:   ");
   printList(list);
 
@@ -199,7 +199,7 @@ int main(int argc, char *argv[]) {
 
   /* DELETIONS */ 
   printf("Deleting from pos: 0 (first)\n");
-  gll_remove(0, &list);
+  gll_remove(0, list);
   printf("List:   ");
   printList(list);
 
@@ -217,7 +217,7 @@ int main(int argc, char *argv[]) {
 
 
   printf("Deleting from pos: 1 (middle)\n");
-  gll_remove(1, &list);
+  gll_remove(1, list);
   printf("List:   ");
   printList(list);
 
@@ -234,7 +234,7 @@ int main(int argc, char *argv[]) {
 
 
   printf("Deleting from pos: 7 (last)\n");
-  gll_remove(7, &list);
+  gll_remove(7, list);
   printf("List:   ");
   printList(list);
 
@@ -250,7 +250,7 @@ int main(int argc, char *argv[]) {
 
 
   printf("Deleting from pos: 99 (invalid)\n");
-  gll_remove(99, &list);
+  gll_remove(99, list);
   printf("List:   ");
   printList(list);
 
@@ -265,7 +265,7 @@ int main(int argc, char *argv[]) {
   printf("\n");
 
   printf("Deleting from pos: 3 (middle)\n");
-  gll_remove(3, &list);
+  gll_remove(3, list);
   printf("List:   ");
   printList(list);
 
@@ -280,7 +280,7 @@ int main(int argc, char *argv[]) {
 
 
   //deallocate the list
-  gll_deallocList(&list);
+  gll_deallocList(list);
 
   return 0;
 }

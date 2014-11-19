@@ -47,10 +47,10 @@ void *gll_get(int pos, LinkedListType *list) {
   return currNode->data;
 }
 
-int gll_add(void *data, int pos, LinkedListType **list) {
+int gll_add(void *data, int pos, LinkedListType *list) {
 
   //if the position is out of range
-  if(pos > (*list)->size || pos < 0)
+  if(pos > list->size || pos < 0)
     return C_NOK;
 
   NodeType *newNode;
@@ -63,31 +63,31 @@ int gll_add(void *data, int pos, LinkedListType **list) {
   newNode->next = NULL;
 
   //list is empty
-  if((*list)->size == 0) {
-    (*list)->first = newNode;
-    (*list)->last = newNode;
+  if(list->size == 0) {
+    list->first = newNode;
+    list->last = newNode;
 
-    (*list)->size++;
+    list->size++;
     return C_OK;
   }
 
   //add in position 0
   if(pos == 0) {
-    (*list)->first->prev = newNode;
-    newNode->next = (*list)->first;
-    (*list)->first = newNode;
+    list->first->prev = newNode;
+    newNode->next = list->first;
+    list->first = newNode;
 
-    (*list)->size++;
+    list->size++;
     return C_OK;
   }
      
   //add in last position
-  if(pos == (*list)->size) {
-    (*list)->last->next = newNode;
-    newNode->prev = (*list)->last;
-    (*list)->last = newNode;
+  if(pos == list->size) {
+    list->last->next = newNode;
+    newNode->prev = list->last;
+    list->last = newNode;
 
-    (*list)->size++;
+    list->size++;
     return C_OK;
   }
 
@@ -96,15 +96,15 @@ int gll_add(void *data, int pos, LinkedListType **list) {
   int reverse;
  
   //decide whether to traverse forward or backward
-  if( pos <= ((*list)->size / 2) ) {
-    currNode = (*list)->first;
+  if( pos <= (list->size / 2) ) {
+    currNode = list->first;
     reverse = 0;
     currPos = 0;
   }
   else {
-    currNode = (*list)->last;
+    currNode = list->last;
     reverse = 1;
-    currPos = (*list)->size-1;
+    currPos = list->size-1;
   }
 
   while(currNode != NULL) {
@@ -120,50 +120,50 @@ int gll_add(void *data, int pos, LinkedListType **list) {
   newNode->next = currNode;
   currNode->prev = newNode;
 
-  (*list)->size++;
+  list->size++;
   return C_OK;  
 }
 
-int gll_remove(int pos, LinkedListType **list) {
+int gll_remove(int pos, LinkedListType *list) {
   //pos is out of range
-  if(pos >= (*list)->size)
+  if(pos >= list->size)
     return C_NOK;
 
   //list is empty
-  if( (*list)->size == 0)
+  if( list->size == 0)
     return C_NOK;
   
   NodeType *currNode = NULL;
 
   //remove last remaining node
-  if( (*list)->size == 1) {
-    gll_deallocNode((*list)->first);  
-    (*list)->first = NULL;
-    (*list)->last = NULL;
+  if( list->size == 1) {
+    gll_deallocNode(list->first);  
+    list->first = NULL;
+    list->last = NULL;
 
-    (*list)->size--;
+    list->size--;
     return C_OK;
   }
     
   //remove node in position 0
   if(pos == 0) {
-    currNode = (*list)->first;    
-    (*list)->first = currNode->next;
-    (*list)->first->prev = NULL;
+    currNode = list->first;    
+    list->first = currNode->next;
+    list->first->prev = NULL;
     gll_deallocNode(currNode);
 
-    (*list)->size--;
+    list->size--;
     return C_OK;
   }
 
   //remove node in last position
-  if(pos == ( (*list)->size - 1) ) {
-    currNode = (*list)->last;
-    (*list)->last = currNode->prev;
-    (*list)->last->next = NULL;
+  if(pos == ( list->size - 1) ) {
+    currNode = list->last;
+    list->last = currNode->prev;
+    list->last->next = NULL;
     gll_deallocNode(currNode);
 
-    (*list)->size--;
+    list->size--;
     return C_OK;
   }
 
@@ -172,15 +172,15 @@ int gll_remove(int pos, LinkedListType **list) {
   int reverse;
   
   //decide whether to traverse forward or backward
-  if( pos <= ((*list)->size / 2) ) {
-    currNode = (*list)->first;
+  if( pos <= (list->size / 2) ) {
+    currNode = list->first;
     reverse = 0;
     currPos = 0;
   }
   else {
-    currNode = (*list)->last;
+    currNode = list->last;
     reverse = 1;
-    currPos = (*list)->size-1;
+    currPos = list->size-1;
   }
 
   while(currNode != NULL) {
@@ -195,7 +195,7 @@ int gll_remove(int pos, LinkedListType **list) {
   currNode->next->prev = currNode->prev;
   gll_deallocNode(currNode);
 
-  (*list)->size--;
+  list->size--;
   return C_OK;
 }
 
@@ -212,8 +212,8 @@ void gll_deallocNode(NodeType *node) {
   free(node);
 }
 
-void gll_deallocList(LinkedListType **list) {
-  NodeType *currNode = (*list)->first;
+void gll_deallocList(LinkedListType *list) {
+  NodeType *currNode = list->first;
   NodeType *nextNode;
   
   while(currNode != NULL) {
@@ -222,5 +222,5 @@ void gll_deallocList(LinkedListType **list) {
     currNode = nextNode;  
   }
 
-  free(*list);
+  free(list);
 } 
