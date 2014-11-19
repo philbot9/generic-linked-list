@@ -10,6 +10,43 @@ LinkedListType *gll_init() {
   list->last = NULL;
 }
 
+void *gll_get(int pos, LinkedListType *list) {
+  if(pos >= list->size)
+    return NULL;
+  
+  int reverse;
+  int currPos;
+  NodeType *currNode;
+  NodeType *prevNode;
+
+  if(pos > (list->size / 2)) {
+    reverse = 1;
+    currNode = list->last;
+    currPos = list->size - 1; 
+  }
+  else {
+    reverse = 0;
+    currNode = list->first;
+    currPos = 0;
+  } 
+  
+  //return first node
+  if(pos == 0) {
+    return list->first->data;
+  }
+
+  while(currNode != NULL) {
+    if(currPos == pos)
+      break;
+
+    currPos = (reverse ? (currPos - 1) : (currPos + 1));
+    prevNode = currNode;
+    currNode = (reverse ? (currNode->prev) : (currNode->next));
+  }       
+
+  return currNode->data;
+}
+
 int gll_add(void *data, int pos, LinkedListType **list) {
 
   //if the position is out of range
@@ -162,8 +199,8 @@ int gll_remove(int pos, LinkedListType **list) {
   return C_OK;
 }
 
-void gll_each(void (*f)(void *), LinkedListType **list) {
-  NodeType *currNode = (*list)->first;
+void gll_each(void (*f)(void *), LinkedListType *list) {
+  NodeType *currNode = list->first;
 
   while(currNode != NULL) {
     (*f)(currNode->data);

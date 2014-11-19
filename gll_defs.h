@@ -14,9 +14,10 @@ typedef struct {
 } LinkedListType;
 
 LinkedListType *gll_init();
+void *gll_get(int, LinkedListType *);
 int gll_add(void *, int, LinkedListType **);
 int gll_remove(int, LinkedListType **);
-void gll_each(void (*f)(void *), LinkedListType **list);
+void gll_each(void (*f)(void *), LinkedListType *);
 void gll_deallocNode(NodeType *);
 void gll_deallocList(LinkedListType **);
 
