@@ -94,77 +94,25 @@ int gll_add(void *data, int pos, LinkedListType *list) {
 }
 
 int gll_remove(int pos, LinkedListType *list) {
-  //pos is out of range
-  if(pos >= list->size)
-    return C_NOK;
-
-  //list is empty
-  if( list->size == 0)
-    return C_NOK;
   
-  NodeType *currNode = NULL;
+  NodeType *currNode = gll_findNode(pos, list);
 
-  //remove last remaining node
-  if( list->size == 1) {
-    gll_deallocNode(list->first);  
-    list->first = NULL;
-    list->last = NULL;
+  //element not found
+  if(currNode == NULL)
+    return C_NOK;
 
-    list->size--;
-    return C_OK;
-  }
-    
-  //remove node in position 0
-  if(pos == 0) {
-    currNode = list->first;    
+  if(currNode->prev == NULL) 
     list->first = currNode->next;
-    list->first->prev = NULL;
-    gll_deallocNode(currNode);
-
-    list->size--;
-    return C_OK;
-  }
-
-  //remove node in last position
-  if(pos == ( list->size - 1) ) {
-    currNode = list->last;
-    list->last = currNode->prev;
-    list->last->next = NULL;
-    gll_deallocNode(currNode);
-
-    list->size--;
-    return C_OK;
-  }
-
-  //remove node from the middle
-  int currPos;
-  int reverse;
+  else 
+    currNode->prev->next = currNode->next;
   
-  //decide whether to traverse forward or backward
-  if( pos <= (list->size / 2) ) {
-    currNode = list->first;
-    reverse = 0;
-    currPos = 0;
-  }
-  else {
-    currNode = list->last;
-    reverse = 1;
-    currPos = list->size-1;
-  }
-
-  while(currNode != NULL) {
-    if(currPos == pos)
-      break;
-
-    currPos = (reverse) ? (currPos - 1) : (currPos + 1);
-    currNode = (reverse) ? currNode->prev : currNode->next;
-  }
-
-  currNode->prev->next = currNode->next;
-  currNode->next->prev = currNode->prev;
-  gll_deallocNode(currNode);
+  if(currNode->next == NULL)
+    list->last = currNode->prev; 
+  else
+    currNode->next->prev = currNode->prev;
 
   list->size--;
+  gll_deallocNode(currNode);
   return C_OK;
 }
 
