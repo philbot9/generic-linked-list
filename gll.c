@@ -11,7 +11,11 @@ LinkedListType *gll_init() {
 }
 
 void *gll_get(int pos, LinkedListType *list) {
-  return gll_findNode(pos, list)->data;
+  NodeType *node =  gll_findNode(pos, list);
+  if(node != NULL) 
+    return node->data;
+  else
+    return NULL;
 }
 
 NodeType *gll_findNode(int pos, LinkedListType *list) {
