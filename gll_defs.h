@@ -17,10 +17,10 @@ LinkedListType *gll_init();
 void *gll_get(int, LinkedListType *);
 
 int gll_add(void *, int, LinkedListType *);
-int gll_remove(int, LinkedListType *);
+int gll_push(void *, LinkedListType *);
 
-//int gll_push(void *, LinkedListType *);
-//void *gll_pop(LinkedListType *);
+int gll_remove(int, LinkedListType *);
+void *gll_pop(LinkedListType *);
 
 void gll_each(void (*f)(void *), LinkedListType *);
 void gll_eachReverse(void (*f)(void *), LinkedListType *);

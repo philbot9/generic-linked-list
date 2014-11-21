@@ -96,6 +96,27 @@ int gll_add(void *data, int pos, LinkedListType *list) {
   return C_OK;
 }
 
+int gll_push(void *data, LinkedListType *list) {
+  NodeType *newNode = (NodeType *) malloc(sizeof(NodeType));
+  newNode->data = data;
+  newNode->prev = NULL;
+  newNode->next = NULL;
+
+  //if list is empty
+  if(list->size == 0) {
+    list->first = newNode;
+  }
+  //if there is at least one element
+  else {
+    list->last->next = newNode;
+    newNode->prev = list->last;
+  }
+
+  list->last = newNode;
+  list->size++;
+  return C_OK;
+}
+
 int gll_remove(int pos, LinkedListType *list) {
   NodeType *currNode = gll_findNode(pos, list);
 
@@ -116,6 +137,19 @@ int gll_remove(int pos, LinkedListType *list) {
   list->size--;
   gll_deallocNode(currNode);
   return C_OK;
+}
+
+void *gll_pop(LinkedListType *list) {
+  NodeType *e = list->last;
+  if(e == NULL)
+    return NULL;
+
+  void *data = e->data;
+
+  if(gll_remove((list->size-1), list) != C_OK)
+    return NULL;
+
+  return data;
 }
 
 void gll_each(void (*f)(void *), LinkedListType *list) {

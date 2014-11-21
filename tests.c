@@ -46,24 +46,22 @@ int main(int argc, char *argv[]) {
    *    - middle position
    *    - last position
    *
-   * 3) gll_remove
+   * 3) gll_push
+   *    - list is empty
+   *    - normal push
+   *
+   * 4) gll_remove
    *    - list is empty
    *    - invalid position
    *    - remove last remaining element
    *    - remove from first position
    *    - remove from middle position
    *    - remove from last position
-   *     
-   * 4) gll_each
-   *    - empty list
-   *    - check elements are in order
-   *
-   * 5) gll_eachReverse
-   *    - empty list
-   *    - check elements are in reverse order
-   *
-   * 6) gll_deallocList
-   *    - empty list
+   * 
+   * 5) gll_pop    
+   *    - list is empty
+   *    - pop last remaining element
+   *    - normal pop 
    *
    * ****************************************************** */
 
@@ -269,14 +267,65 @@ int main(int argc, char *argv[]) {
   }
 
 
-printf("\n");
+  printf("\n");
+
+
+  /*
+   * 3) gll_push
+   */    
+
+  gll_deallocList(list);
+  list = gll_init();
+  int reference3[3];
+
+  //list is empty
+  printf("gll_push: empty list...");
+  
+  gll_push(&data[0], list);
+  reference3[0] = data[0];
+  
+  if(checkList(list, reference3) == 0 &&
+      list->first != NULL &&
+      list->last != NULL &&
+      list->size == 1) {
+    printf("pass\n");
+  }
+  else {
+    errorCount++;
+    printf("FAIL\n");
+  }
+
+  //normal push
+  printf("gll_push: normal push...");
+  
+
+  gll_add(&data[1], 1, list);  
+  
+  reference3[0] = data[0];
+  reference3[1] = data[1];
+  reference3[2] = data[2];
+
+  gll_push(&data[2], list);
+
+  if(checkList(list, reference3) == 0 &&
+      list->first != NULL &&
+      list->last != NULL &&
+      list->size == 3) {
+    printf("pass\n");
+  }
+  else {
+    errorCount++;
+    printf("FAIL\n");
+  }
+
+  printf("\n");
 
 /*
-  3) gll_remove
+  4) gll_remove
 */
   gll_deallocList(list);
   list = gll_init();
-  int reference3[5];
+  int reference4[5];
 
   
   //list is empty
@@ -338,12 +387,12 @@ printf("\n");
   
   gll_remove(0, list);
 
-  reference3[0] = data[1];
-  reference3[1] = data[2];
-  reference3[2] = data[3];
-  reference3[3] = data[4];
+  reference4[0] = data[1];
+  reference4[1] = data[2];
+  reference4[2] = data[3];
+  reference4[3] = data[4];
 
-  if (checkList(list, reference3) == 0 &&
+  if (checkList(list, reference4) == 0 &&
       list->first != NULL &&
       list->last != NULL &&
       list->size == 4) {
@@ -361,11 +410,11 @@ printf("\n");
   
   gll_remove(2, list);
 
-  reference3[0] = data[1];
-  reference3[1] = data[2];
-  reference3[2] = data[4];
+  reference4[0] = data[1];
+  reference4[1] = data[2];
+  reference4[2] = data[4];
 
-  if (checkList(list, reference3) == 0 &&
+  if (checkList(list, reference4) == 0 &&
       list->first != NULL &&
       list->last != NULL &&
       list->size == 3) {
@@ -384,10 +433,10 @@ printf("\n");
   
   gll_remove(2, list);
 
-  reference3[0] = data[1];
-  reference3[1] = data[2];
+  reference4[0] = data[1];
+  reference4[1] = data[2];
 
-  if (checkList(list, reference3) == 0 &&
+  if(checkList(list, reference4) == 0 &&
       list->first != NULL &&
       list->last != NULL &&
       list->size == 2) {
@@ -398,6 +447,76 @@ printf("\n");
     errorCount++;
     printf("FAIL\n");
   }
+
+  printf("\n");
+  
+
+  /*
+   * 5) gll_pop    
+   */
+  gll_deallocList(list);
+  list = gll_init();
+  int reference5[3];
+
+  
+  //list is empty
+  printf("gll_pop:  empty list...");
+  if(gll_pop(list) == NULL &&
+      list->first == NULL &&
+      list->last == NULL &&
+      list->size == 0) {
+    printf("pass\n");
+  }
+  else {
+    errorCount++;
+    printf("FAIL\n");
+  }
+  
+  //pop last remaining element
+  printf("gll_pop:  last remaining element...");
+
+  gll_add(&data[0], 0, list);
+ 
+  int *x = (int *) gll_pop(list);
+
+  if(*x == data[0] &&
+      list->first == NULL &&
+      list->last == NULL &&
+      list->size == 0) {
+    printf("pass\n");
+  }
+  else {
+    errorCount++;
+    printf("FAIL\n");
+  }
+
+  //normal pop
+  printf("gll_pop:  normal pop...");
+
+  gll_add(&data[0], 0, list);
+  gll_add(&data[1], 1, list);
+  gll_add(&data[2], 2, list);
+
+  reference5[0] = data[0];
+  reference5[1] = data[1];
+ 
+  int *y = (int *) gll_pop(list);
+
+  if(*y == data[2] &&
+      checkList(list, reference5) == 0 &&
+      list->first != NULL &&
+      list->last != NULL &&
+      list->size == 2) {
+    printf("pass\n");
+  }
+  else {
+    errorCount++;
+    printf("FAIL\n");
+  } 
+
+   
+
+
 
   gll_deallocList(list);
 
