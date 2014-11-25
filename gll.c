@@ -18,7 +18,7 @@ void *gll_get(int pos, LinkedListType *list) {
     return NULL;
 }
 
-NodeType *gll_findNode(int pos, LinkedListType *list) {
+static NodeType *gll_findNode(int pos, LinkedListType *list) {
   if(pos > list->size || pos < 0)
     return NULL;  
 
@@ -135,7 +135,7 @@ int gll_remove(int pos, LinkedListType *list) {
     currNode->next->prev = currNode->prev;
 
   list->size--;
-  gll_deallocNode(currNode);
+  free(currNode);
   return C_OK;
 }
 
@@ -170,17 +170,13 @@ void gll_eachReverse(void (*f)(void *), LinkedListType *list) {
   }
 }
 
-void gll_deallocNode(NodeType *node) {
-  free(node);
-}
-
 void gll_deallocList(LinkedListType *list) {
   NodeType *currNode = list->first;
   NodeType *nextNode;
   
   while(currNode != NULL) {
     nextNode = currNode->next;
-    gll_deallocNode(currNode);
+    free(currNode);
     currNode = nextNode;  
   }
 

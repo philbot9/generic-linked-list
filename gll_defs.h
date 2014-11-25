@@ -25,7 +25,6 @@ void *gll_pop(LinkedListType *);
 void gll_each(void (*f)(void *), LinkedListType *);
 void gll_eachReverse(void (*f)(void *), LinkedListType *);
 
-void gll_deallocNode(NodeType *);
 void gll_deallocList(LinkedListType *);
 
-NodeType *gll_findNode(int, LinkedListType *);
+static NodeType *gll_findNode(int, LinkedListType *);
