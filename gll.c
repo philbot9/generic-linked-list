@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "gll_defs.h"
+#include "GenericLinkedList.h"
 
 LinkedListType *gll_init() {
   LinkedListType *list = (LinkedListType *) malloc(sizeof(LinkedListType));

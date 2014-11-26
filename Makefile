@@ -1,10 +1,10 @@
-gll.o:	gll.c gll_defs.h
+gll.o:	gll.c GenericLinkedList.h
 	gcc -c gll.c
 
-tests.o:	tests.c gll_defs.h gll.o
+tests.o:	tests.c GenericLinkedList.h gll.o
 	gcc -c tests.c
 
-tests:	gll.o gll_defs.h tests.o
+tests:	gll.o GenericLinkedList.h tests.o
 	gcc -o tests gll.o tests.o
 
 clean:
