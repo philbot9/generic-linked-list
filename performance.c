@@ -119,7 +119,7 @@ static float start() {
 
 static void stop(float startTime) {
   float time = ((clock() - startTime) / CLOCKS_PER_SEC) * 1000.0;
-  printf("%.4fms\n", time);
+  printf("%8.4f ms\n", time);
 }
 
 static void run_gll_push() {
