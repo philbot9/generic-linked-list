@@ -8,7 +8,7 @@ typedef struct Node {
 } NodeType;
 
 typedef struct {
-  int size;
+  unsigned int size;
   NodeType *first;
   NodeType *last;
 } LinkedListType;
