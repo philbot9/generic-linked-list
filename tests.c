@@ -70,7 +70,7 @@ static void test_gll_get() {
   assert(gll_get(1, list) == &b);
   assert(gll_get(2, list) == &c); 
 
-  gll_deallocList(list);
+  gll_destroy(list);
 }
 
 static void test_gll_add() {
@@ -129,7 +129,7 @@ static void test_gll_add() {
   assert(list->first->data == &a);
  
 
-  gll_deallocList(list);
+  gll_destroy(list);
 }
 
 static void test_gll_remove() {
@@ -189,7 +189,7 @@ static void test_gll_remove() {
   assert(list->first == NULL);
   assert(list->last == NULL);
 
-  gll_deallocList(list);
+  gll_destroy(list);
 }
 
 static void test_gll_push() {
@@ -222,7 +222,7 @@ static void test_gll_push() {
   assert(list->last->prev->data == &b);
   assert(list->last->prev->next->data == &c);
 
-  gll_deallocList(list);
+  gll_destroy(list);
 }
 
 static void test_gll_pushFront() {
@@ -258,7 +258,7 @@ static void test_gll_pushFront() {
   assert(list->last->data == &c);
   assert(list->last->prev->data == &b);
 
-  gll_deallocList(list);
+  gll_destroy(list);
 }
 
 
@@ -290,7 +290,7 @@ static void test_gll_pop() {
   assert(list->last == NULL);
   assert(list->size == 0);
 
-  gll_deallocList(list);
+  gll_destroy(list);
 }
 
 void each_test_function(void *x) {
@@ -315,8 +315,8 @@ static void test_gll_each() {
   assert(gll_get(1, each_list) == &each_b);
   assert(gll_get(2, each_list) == &each_c);
   
-  gll_deallocList(each_list);
-  gll_deallocList(list);
+  gll_destroy(each_list);
+  gll_destroy(list);
 }
 
 static void test_gll_eachReverse() {
@@ -337,7 +337,7 @@ static void test_gll_eachReverse() {
   assert(gll_get(1, each_list) == &each_b);
   assert(gll_get(0, each_list) == &each_c);
   
-  gll_deallocList(each_list);
-  gll_deallocList(list);
+  gll_destroy(each_list);
+  gll_destroy(list);
 }
 

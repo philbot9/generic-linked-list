@@ -191,7 +191,7 @@ void gll_eachReverse(void (*f)(void *), LinkedListType *list) {
   }
 }
 
-void gll_deallocList(LinkedListType *list) {
+void gll_destroy(LinkedListType *list) {
   NodeType *currNode = list->first;
   NodeType *nextNode;
   
