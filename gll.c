@@ -205,6 +205,11 @@ void gll_eachReverse(void (*f)(void *), LinkedListType *list) {
   }
 }
 
+void gll_clear(LinkedListType **list) {
+  gll_destroy(*list);
+  *list = gll_init();
+}
+
 void gll_destroy(LinkedListType *list) {
   NodeType *currNode = list->first;
   NodeType *nextNode;

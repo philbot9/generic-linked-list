@@ -19,6 +19,7 @@ static void test_gll_pop();
 static void test_gll_popFront();
 static void test_gll_each();
 static void test_gll_eachReverse();
+static void test_gll_clear();
 
 void each_test_function(void *);
 
@@ -50,6 +51,9 @@ int main(int argc, char *argv) {
   test_gll_each();
   printf(" gll_eachReverse\n");
   test_gll_eachReverse();
+  printf(" gll_clear\n");
+  test_gll_clear();
+
 
   printf("\nCompleted.\n");
 
@@ -381,3 +385,22 @@ static void test_gll_eachReverse() {
   gll_destroy(list);
 }
 
+static void test_gll_clear() {
+  LinkedListType *list = gll_init();
+  
+  char  a = 'A';
+  int   b = 15;
+  char *c = "str";
+
+  gll_push(&a, list);
+  gll_push(&b, list);
+  gll_push(&c, list);
+
+  assert(list->size == 3);
+  gll_clear(&list);
+  assert(list->size == 0);
+  assert(list->first == NULL);
+  assert(list->last == NULL);
+
+  gll_destroy(list);
+}
