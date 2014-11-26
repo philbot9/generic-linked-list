@@ -33,83 +33,91 @@ int main(int argc, char **argv) {
 
   printf("\nNumber of Nodes: %d\n\n", NUM_NODES);
 
-
   printf("  gll_push() (All):            ");
+  fflush(stdout);
   run_gll_push(); 
 
   printf("  gll_pop() (All):             ");
+  fflush(stdout);
   run_gll_pop(); 
-
 
   gll_destroy(LIST);
   LIST = gll_init();
   
+
   printf("  gll_pushFront() (All):       ");
+  fflush(stdout);
   run_gll_pushFront(); 
   
   printf("  gll_popFront() (All):        ");
+  fflush(stdout);
   run_gll_popFront(); 
-  
 
   gll_destroy(LIST);
   LIST = gll_init();
    
+
   printf("\n");
   printf("  gll_push() (All):            ");
+  fflush(stdout);
   run_gll_push(); 
 
 
   printf("\n");
   printf("  1 * gll_get() (middle):      ");
+  fflush(stdout);
   run_gll_get(NUM_NODES/2);
 
   printf("  1 * gll_get() (end):         ");
+  fflush(stdout);
   run_gll_get(NUM_NODES-1); 
 
   printf("  1 * gll_get() (begin):       ");
+  fflush(stdout);
   run_gll_get(0); 
 
+
   printf("\n");
-
-
   printf("  1 * gll_add() (middle):      ");
+  fflush(stdout);
   run_gll_add(NUM_NODES/2);
 
   printf("  1 * gll_add() (end):         ");
+  fflush(stdout);
   run_gll_add(NUM_NODES-1);
 
   printf("  1 * gll_add() (begin):       ");
+  fflush(stdout);
   run_gll_add(0);
 
 
   printf("\n");
-
   printf("  1 * gll_remove() (middle):   ");
+  fflush(stdout);
   run_gll_remove(NUM_NODES/2); 
 
   printf("  1 * gll_remove() (end):      ");
+  fflush(stdout);
   run_gll_remove(NUM_NODES-1); 
 
   printf("  1 * gll_remove() (begin):    ");
+  fflush(stdout);
   run_gll_remove(0); 
 
-  printf("\n");
 
+  printf("\n");
   printf("  gll_each():                  ");
+  fflush(stdout);
   run_gll_each();
 
   printf("  gll_eachReverse():           ");
+  fflush(stdout);
   run_gll_eachReverse();
 
-  
   printf("\n");
-    
 
   gll_destroy(LIST);
-
-
   return 0;
-
 }
 
 
