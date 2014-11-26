@@ -8,6 +8,7 @@ LinkedListType *gll_init() {
   list->size = 0;
   list->first = NULL;
   list->last = NULL;
+  return list;
 }
 
 void *gll_get(int pos, LinkedListType *list) {

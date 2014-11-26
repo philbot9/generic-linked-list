@@ -8,5 +8,5 @@ tests:	gll.o gll_defs.h tests.o
 	gcc -o tests gll.o tests.o
 
 clean:
-	-rm *.o
+	-rm *.o tests
 
