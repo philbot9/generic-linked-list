@@ -26,6 +26,7 @@ static NodeType *gll_findNode(int pos, LinkedListType *list) {
   int currPos;
   int reverse;
   
+   
   if(pos > ((list->size-1) / 2)) {
     reverse  = 1;
     currPos  = list->size - 1;
@@ -36,7 +37,7 @@ static NodeType *gll_findNode(int pos, LinkedListType *list) {
     currPos  = 0;
     currNode = list->first;
   }  
-
+  
   while(currNode != NULL) {
     if(currPos == pos)
       break;
