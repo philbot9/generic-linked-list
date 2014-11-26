@@ -1,17 +1,20 @@
+OBJ_TEST = gll.o tests.o
+OBJ_PERF = gll.o performance.o
+
 gll.o:	gll.c GenericLinkedList.h
 	gcc -c gll.c
 
-tests.o:	tests.c GenericLinkedList.h gll.o
+tests.o:	tests.c GenericLinkedList.h
 	gcc -c tests.c
-
-tests:	gll.o GenericLinkedList.h tests.o
-	gcc -o tests gll.o tests.o
 
 performance.o:	performance.c GenericLinkedList.h
 	gcc -c performance.c
 
-performance:	gll.o GenericLinkedList.h performance.o
-	gcc -o performance gll.o performance.o
+tests:	$(OBJ_TEST) GenericLinkedList.h
+	gcc -o tests $(OBJ_TEST)
+
+performance:	$(OBJ_PERF) GenericLinkedList.h
+	gcc -o performance $(OBJ_PERF)
 
 clean:
 	-rm *.o tests performance
