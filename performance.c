@@ -105,6 +105,8 @@ int main(int argc, char **argv) {
   printf("\n");
     
 
+  gll_destroy(LIST);
+
 
   return 0;
 
