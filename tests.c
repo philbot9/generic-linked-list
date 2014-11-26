@@ -16,7 +16,7 @@ static void test_gll_get();
 static void test_gll_push();
 static void test_gll_pushFront();
 static void test_gll_pop();
-
+static void test_gll_popFront();
 static void test_gll_each();
 static void test_gll_eachReverse();
 
@@ -30,18 +30,28 @@ LinkedListType *each_list;
 
 
 int main(int argc, char *argv) {
-  printf("Running tests...");
-  test_gll_get();
-  test_gll_add();
-  test_gll_remove();
-  test_gll_push();
-  test_gll_pushFront();
-  test_gll_pop();
+  printf("Running tests:\n");
 
+  printf(" gll_get\n");
+  test_gll_get();
+  printf(" gll_add\n");
+  test_gll_add();
+  printf(" gll_remove\n");
+  test_gll_remove();
+  printf(" gll_push\n");
+  test_gll_push();
+  printf(" gll_pushFront\n");
+  test_gll_pushFront();
+  printf(" gll_pop\n");
+  test_gll_pop();
+  printf(" gll_popFront\n");
+  test_gll_popFront();
+  printf(" gll_each\n");
   test_gll_each();
+  printf(" gll_eachReverse\n");
   test_gll_eachReverse();
 
-  printf("complete\n");
+  printf("\nCompleted.\n");
 
   return C_OK;
 }
@@ -292,6 +302,36 @@ static void test_gll_pop() {
 
   gll_destroy(list);
 }
+
+static void test_gll_popFront() {
+  LinkedListType *list = gll_init();
+  
+  char  a = 'A';
+  int   b = 15;
+  char *c = "str";
+
+  gll_push(&a, list);
+  gll_push(&b, list);
+  gll_push(&c, list);
+  assert(list->size == 3);
+
+  assert(gll_popFront(list) == &a);
+  assert(list->first->data == &b);
+  assert(list->first->prev == NULL);
+  assert(list->first->next->data == &c);
+  assert(list->size == 2);
+
+  assert(gll_popFront(list) == &b);
+  assert(list->size == 1);
+
+  assert(gll_popFront(list) == &c);
+  assert(list->first == NULL);
+  assert(list->last == NULL);
+  assert(list->size == 0);
+
+  gll_destroy(list);
+}
+
 
 void each_test_function(void *x) {
   gll_push(x, each_list);

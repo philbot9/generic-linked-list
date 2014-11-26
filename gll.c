@@ -173,6 +173,19 @@ void *gll_pop(LinkedListType *list) {
   return data;
 }
 
+void *gll_popFront(LinkedListType *list) {
+  NodeType *e = list->first;
+  if(e == NULL)
+    return NULL;
+
+  void *data = e->data;
+
+  if(gll_remove(0, list) != C_OK)
+    return NULL;
+
+  return data;
+}
+
 void gll_each(void (*f)(void *), LinkedListType *list) {
   NodeType *currNode = list->first;
 
