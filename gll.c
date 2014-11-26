@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-
 #include "gll_defs.h"
 
 LinkedListType *gll_init() {
@@ -114,6 +113,27 @@ int gll_push(void *data, LinkedListType *list) {
   }
 
   list->last = newNode;
+  list->size++;
+  return C_OK;
+}
+
+int gll_pushFront(void *data, LinkedListType *list) {
+  NodeType *newNode = (NodeType *) malloc(sizeof(NodeType));
+  newNode->data = data;
+  newNode->prev = NULL;
+  newNode->next = NULL;
+
+  //if list is empty
+  if(list->size == 0) {
+    list->last = newNode;
+  }
+  //if there is at least one element
+  else {
+    list->first->prev = newNode;
+    newNode->next = list->first;
+  }
+
+  list->first = newNode;
   list->size++;
   return C_OK;
 }

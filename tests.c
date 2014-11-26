@@ -14,6 +14,7 @@ static void test_gll_add();
 static void test_gll_remove();
 static void test_gll_get();
 static void test_gll_push();
+static void test_gll_pushFront();
 static void test_gll_pop();
 
 static void test_gll_each();
@@ -34,6 +35,7 @@ int main(int argc, char *argv) {
   test_gll_add();
   test_gll_remove();
   test_gll_push();
+  test_gll_pushFront();
   test_gll_pop();
 
   test_gll_each();
@@ -222,6 +224,43 @@ static void test_gll_push() {
 
   gll_deallocList(list);
 }
+
+static void test_gll_pushFront() {
+  LinkedListType *list = gll_init();
+  
+  char  a = 'A';
+  int   b = 15;
+  char *c = "str";
+
+  assert(list->size == 0);
+  
+  assert(gll_pushFront(&c, list) == C_OK);
+  assert(list->size == 1);
+  assert(list->first->data == &c);
+  assert(list->first->prev == NULL);
+  assert(list->first->next == NULL);
+  assert(list->last->data == &c);
+
+  assert(gll_pushFront(&b, list) == C_OK);
+  assert(list->size == 2);
+  assert(list->first->data == &b);
+  assert(list->first->next->data == &c);
+  assert(list->first->prev == NULL);
+  assert(list->last->data == &c);
+  assert(list->last->prev->data == &b);
+  assert(list->last->next == NULL);
+
+  assert(gll_pushFront(&a, list) == C_OK);
+  assert(list->size == 3);
+  assert(list->first->data = &a);
+  assert(list->first->next->data = &b);
+  assert(list->first->next->prev->data = &a);
+  assert(list->last->data == &c);
+  assert(list->last->prev->data == &b);
+
+  gll_deallocList(list);
+}
+
 
 static void test_gll_pop() {
   LinkedListType *list = gll_init();
