@@ -13,6 +13,8 @@
 static void test_gll_add();
 static void test_gll_remove();
 static void test_gll_get();
+static void test_gll_first();
+static void test_gll_last();
 static void test_gll_push();
 static void test_gll_pushFront();
 static void test_gll_pop();
@@ -30,11 +32,16 @@ int each_c;
 gll_t *each_list;
 
 
-int main(int argc, char *argv) {
+int main(int argc, char *argv) 
+{
   printf("Running tests:\n");
 
   printf(" gll_get\n");
   test_gll_get();
+  printf(" gll_first\n");
+  test_gll_first();
+  printf(" gll_last\n");
+  test_gll_last();
   printf(" gll_add\n");
   test_gll_add();
   printf(" gll_remove\n");
@@ -60,7 +67,8 @@ int main(int argc, char *argv) {
   return C_OK;
 }
 
-static void test_gll_get() {
+static void test_gll_get() 
+{
   gll_t *list = gll_init();
   
   //Get from an empty list
@@ -87,7 +95,18 @@ static void test_gll_get() {
   gll_destroy(list);
 }
 
-static void test_gll_add() {
+static void test_gll_first() 
+{
+  assert(1 == 2);
+}
+
+static void test_gll_last()
+{ 
+  assert(1 == 2);
+}
+
+static void test_gll_add() 
+{
   gll_t *list = gll_init();
   
   char  a = 'A';
@@ -146,7 +165,8 @@ static void test_gll_add() {
   gll_destroy(list);
 }
 
-static void test_gll_remove() {
+static void test_gll_remove() 
+{
   gll_t *list = gll_init();
   
   char  a = 'A';
@@ -206,7 +226,8 @@ static void test_gll_remove() {
   gll_destroy(list);
 }
 
-static void test_gll_push() {
+static void test_gll_push() 
+{
   gll_t *list = gll_init();
   
   char  a = 'A';
@@ -239,7 +260,8 @@ static void test_gll_push() {
   gll_destroy(list);
 }
 
-static void test_gll_pushFront() {
+static void test_gll_pushFront() 
+{
   gll_t *list = gll_init();
   
   char  a = 'A';
@@ -276,7 +298,8 @@ static void test_gll_pushFront() {
 }
 
 
-static void test_gll_pop() {
+static void test_gll_pop() 
+{
   gll_t *list = gll_init();
   
   char  a = 'A';
@@ -307,7 +330,8 @@ static void test_gll_pop() {
   gll_destroy(list);
 }
 
-static void test_gll_popFront() {
+static void test_gll_popFront() 
+{
   gll_t *list = gll_init();
   
   char  a = 'A';
@@ -337,11 +361,13 @@ static void test_gll_popFront() {
 }
 
 
-void each_test_function(void *x) {
+void each_test_function(void *x) 
+{
   gll_push(each_list, x);
 }
 
-static void test_gll_each() {
+static void test_gll_each() 
+{
   each_list = gll_init();
   gll_t *list = gll_init();
 
@@ -363,7 +389,8 @@ static void test_gll_each() {
   gll_destroy(list);
 }
 
-static void test_gll_eachReverse() {
+static void test_gll_eachReverse() 
+{
   each_list = gll_init();
   gll_t *list = gll_init();
 
@@ -385,7 +412,8 @@ static void test_gll_eachReverse() {
   gll_destroy(list);
 }
 
-static void test_gll_clear() {
+static void test_gll_clear() 
+{
   gll_t *list = gll_init();
   
   char  a = 'A';

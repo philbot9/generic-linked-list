@@ -20,7 +20,8 @@ static void run_gll_eachReverse();
 static int NUM_NODES;
 gll_t *LIST;
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv) 
+{
   NUM_NODES = 10000000;
   LIST = gll_init();
 
@@ -121,16 +122,19 @@ int main(int argc, char **argv) {
 }
 
 
-static float start() {
+static float start() 
+{
   return clock();
 }
 
-static void stop(float startTime) {
+static void stop(float startTime) 
+{
   float time = ((clock() - startTime) / CLOCKS_PER_SEC) * 1000.0;
   printf("%8.4f ms\n", time);
 }
 
-static void run_gll_push() {
+static void run_gll_push() 
+{
   volatile int i;
   volatile void *ptr = &i;
   float startT = start();
@@ -141,7 +145,8 @@ static void run_gll_push() {
   stop(startT);
 }
 
-static void run_gll_pop() {
+static void run_gll_pop() 
+{
   volatile int i;
   float startT = start();
 
@@ -151,7 +156,8 @@ static void run_gll_pop() {
   stop(startT);
 }
 
-static void run_gll_pushFront() {
+static void run_gll_pushFront() 
+{
   volatile int i;
   volatile void *ptr = &i;
   float startT = start();
@@ -162,7 +168,8 @@ static void run_gll_pushFront() {
   stop(startT);
 }
 
-static void run_gll_popFront() {
+static void run_gll_popFront() 
+{
   volatile int i;
   float startT = start();
 
@@ -172,7 +179,8 @@ static void run_gll_popFront() {
   stop(startT);
 }
 
-static void run_gll_add(int pos) {
+static void run_gll_add(int pos) 
+{
   int i = 10;
   float startT = start();
 
@@ -181,31 +189,35 @@ static void run_gll_add(int pos) {
   stop(startT);
 }
 
-static void run_gll_get(int pos) {
+static void run_gll_get(int pos) 
+{
   float startT = start();
   gll_get(LIST, pos);
   stop(startT);
 }
 
 
-static void run_gll_remove(int pos) {
+static void run_gll_remove(int pos) 
+{
   float startT = start();
   gll_remove(LIST, pos);
   stop(startT);
 }
 
-void dummyFunction(void* ptr) {}
+void dummyFunction(void* ptr) 
+{}
 
-static void run_gll_each() {
+static void run_gll_each() 
+{
   float startT = start();
   gll_each(LIST, dummyFunction);
   stop(startT);
 }
 
-static void run_gll_eachReverse() {
+static void run_gll_eachReverse() 
+{
   float startT = start();
   gll_eachReverse(LIST, dummyFunction);
   stop(startT);
 }
-
 

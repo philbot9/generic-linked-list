@@ -12,7 +12,8 @@ static gll_node_t *gll_initNode(void *);
  * Initialize a new list
  * returns:   pointer to new list
  */
-gll_t *gll_init() {
+gll_t *gll_init() 
+{
   gll_t *list = (gll_t *) malloc(sizeof(gll_t));
   list->size = 0;
   list->first = NULL;
@@ -26,7 +27,8 @@ gll_t *gll_init() {
  * in:        pointer to data
  * returns:   pointer to new node
  */
-static gll_node_t *gll_initNode(void *data) {
+static gll_node_t *gll_initNode(void *data) 
+{
   gll_node_t *node = (gll_node_t *) malloc(sizeof(gll_node_t));
   node->data = data;
   node->prev = NULL;
@@ -40,13 +42,27 @@ static gll_node_t *gll_initNode(void *data) {
  * in:        position
  * returns:   void pointer to data / NULL on failure
  */
-void *gll_get(gll_t *list, int pos) {
+void *gll_get(gll_t *list, int pos) 
+{
   gll_node_t *node = gll_findNode(list, pos);
   if(node != NULL) 
     return node->data;
   else
     return NULL;
 }
+
+/*  TODO  */
+void *gll_first(gll_t *list)
+{
+  return NULL;
+}
+
+/*  TODO  */
+void *gll_last(gll_t *list)
+{
+  return NULL;
+}
+
 
 /*
  * Helper function:
@@ -55,7 +71,8 @@ void *gll_get(gll_t *list, int pos) {
  * in:        position
  * returns:   pointer to Node / NULL on failure
  */
-static gll_node_t *gll_findNode(gll_t *list, int pos) {
+static gll_node_t *gll_findNode(gll_t *list, int pos) 
+{
   if(pos > list->size || pos < 0)
     return NULL;  
 
@@ -68,8 +85,7 @@ static gll_node_t *gll_findNode(gll_t *list, int pos) {
     reverse  = 1;
     currPos  = list->size - 1;
     currNode = list->last;
-  }
-  else {
+  } else {
     reverse  = 0;
     currPos  = 0;
     currNode = list->first;
@@ -82,7 +98,6 @@ static gll_node_t *gll_findNode(gll_t *list, int pos) {
     currNode = (reverse ? (currNode->prev) : (currNode->next));
     currPos  = (reverse ? (currPos-1) : (currPos+1));
   }
-
   return currNode;
 }
 
@@ -93,7 +108,8 @@ static gll_node_t *gll_findNode(gll_t *list, int pos) {
  * in:        position
  * returns:   0 on success, -1 on failure
  */
-int gll_add(gll_t *list, void *data, int pos) {
+int gll_add(gll_t *list, void *data, int pos) 
+{
   if(pos > list->size || pos < 0)
     return C_NOK;
 
@@ -126,14 +142,11 @@ int gll_add(gll_t *list, void *data, int pos) {
       currNode->prev->next = newNode;
 
     currNode->prev = newNode;
-  } 
-  /* adding at the end */
-  else {
+  } else { /* adding at the end */
     list->last->next = newNode;
     newNode->prev = list->last;
     list->last = newNode;    
   }
-  
   list->size++;
   return C_OK;
 }
@@ -145,20 +158,19 @@ int gll_add(gll_t *list, void *data, int pos) {
  * in:        pointer to data
  * returns:   0 on success, -1 on failure
  */
-int gll_push(gll_t *list, void *data) {
+int gll_push(gll_t *list, void *data) 
+{
   /* initialize new node */
   gll_node_t *newNode = gll_initNode(data);
 
   /* if list is empty */
   if(list->size == 0) {
     list->first = newNode;
-  }
-  /* if there is at least one element */
-  else {
+  } else {
+    /* if there is at least one element */
     list->last->next = newNode;
     newNode->prev = list->last;
   }
-
   list->last = newNode;
   list->size++;
   return C_OK;
@@ -170,19 +182,18 @@ int gll_push(gll_t *list, void *data) {
  * in:        pointer to data
  * returns:   0 on success, -1 on failure
  */
-int gll_pushFront(gll_t *list, void *data) {
+int gll_pushFront(gll_t *list, void *data) 
+{
   gll_node_t *newNode = gll_initNode(data); 
 
   /* if list is empty */
   if(list->size == 0) {
     list->last = newNode;
-  }
-  /* if there is at least one element */
-  else {
+  } else {
+    /* if there is at least one element */
     list->first->prev = newNode;
     newNode->next = list->first;
   }
-
   list->first = newNode;
   list->size++;
   return C_OK;
@@ -195,7 +206,8 @@ int gll_pushFront(gll_t *list, void *data) {
  * in:        pointer to data
  * returns:   0 on success, -1 on failure
  */
-int gll_remove(gll_t *list, int pos) {
+int gll_remove(gll_t *list, int pos) 
+{
   gll_node_t *currNode = gll_findNode(list, pos);
 
   if(currNode == NULL)
@@ -221,7 +233,8 @@ int gll_remove(gll_t *list, int pos) {
  * in:        pointer to list
  * returns:   pointer to data of last node/NULL if empty
  */ 
-void *gll_pop(gll_t *list) {
+void *gll_pop(gll_t *list) 
+{
   gll_node_t *node = list->last;
   if(node == NULL)
     return NULL;
@@ -239,7 +252,8 @@ void *gll_pop(gll_t *list) {
  * in:        pointer to list
  * returns:   pointer to data of first node/NULL if empty
  */
-void *gll_popFront(gll_t *list) {
+void *gll_popFront(gll_t *list) 
+{
   gll_node_t *node = list->first;
   if(node == NULL)
     return NULL;
@@ -260,7 +274,8 @@ void *gll_popFront(gll_t *list) {
  *            ** function must be of return type void and
  *            ** take void pointer as parameter
  */
-void gll_each(gll_t *list, void (*f)(void *)) {
+void gll_each(gll_t *list, void (*f)(void *)) 
+{
   gll_node_t *currNode = list->first;
 
   while(currNode != NULL) {
@@ -277,7 +292,8 @@ void gll_each(gll_t *list, void (*f)(void *)) {
  *            ** function must be of return type void and
  *            ** take void pointer as parameter
  */
-void gll_eachReverse(gll_t *list, void (*f)(void *)) {
+void gll_eachReverse(gll_t *list, void (*f)(void *)) 
+{
   gll_node_t *currNode = list->last;
 
   while(currNode != NULL) {
@@ -286,13 +302,13 @@ void gll_eachReverse(gll_t *list, void (*f)(void *)) {
   }
 }
 
-
 /*
  * destroys the list and allocates a new (empty)
  * in its memory location
  * in:        pointer to list
  */
-void gll_clear(gll_t *list) {
+void gll_clear(gll_t *list) 
+{
   gll_destroy(list);
   list = gll_init();
 }
@@ -302,7 +318,8 @@ void gll_clear(gll_t *list) {
  * Does not touch the data stored at the nodes!
  * in:        pointer to list
  */
-void gll_destroy(gll_t *list) {
+void gll_destroy(gll_t *list) 
+{
   gll_node_t *currNode = list->first;
   gll_node_t *nextNode;
   
@@ -311,6 +328,5 @@ void gll_destroy(gll_t *list) {
     free(currNode);
     currNode = nextNode;  
   }
-
   free(list);
 } 
