@@ -1,3 +1,8 @@
+/*
+ * File:      gll.c
+ * Author:    Philip Klostermann
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "gll.h"
@@ -51,18 +56,31 @@ void *gll_get(gll_t *list, int pos)
     return NULL;
 }
 
-/*  TODO  */
+/*
+ * return the first element in the list
+ * in:        list pointer
+ * returns:   data of first element / NULL on failure
+ */
 void *gll_first(gll_t *list)
 {
-  return NULL;
+  if(list->first == NULL)
+    return NULL;
+
+  return list->first->data;
 }
 
-/*  TODO  */
+/*
+ * return the last element in the list
+ * in:        list pointer
+ * returns:   data of last element / NULL on failure
+ */
 void *gll_last(gll_t *list)
 {
-  return NULL;
-}
+  if(list->last == NULL)
+    return NULL;
 
+  return list->last->data;
+}
 
 /*
  * Helper function:
@@ -309,8 +327,18 @@ void gll_eachReverse(gll_t *list, void (*f)(void *))
  */
 void gll_clear(gll_t *list) 
 {
-  gll_destroy(list);
-  list = gll_init();
+  gll_node_t *currNode = list->first;
+  gll_node_t *nextNode;
+
+  while(currNode != NULL) {
+    nextNode = currNode->next;
+    free(currNode);
+    currNode = nextNode;
+  }
+
+  list->first = NULL;
+  list->last = NULL;
+  list->size = 0;
 }
 
 /*

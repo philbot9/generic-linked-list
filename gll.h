@@ -3,7 +3,6 @@
  * Author:   Philip Klostermann 
  */
 
-
 /*
  * Node Type: gll_node_t struct
  */

@@ -25,7 +25,7 @@ static void test_gll_clear();
 
 void each_test_function(void *);
 
-//Global variables
+/* Global variables */
 int each_a;
 int each_b;
 int each_c;
@@ -71,7 +71,7 @@ static void test_gll_get()
 {
   gll_t *list = gll_init();
   
-  //Get from an empty list
+  /* Get from an empty list */
   assert(gll_get(list, 0) == NULL);  
   
   char  a = 'A';
@@ -82,12 +82,12 @@ static void test_gll_get()
   gll_push(list, &b);
   gll_push(list, &c);
 
-  //Get from an unused position
+  /* Get from an unused position */
   assert(gll_get(list, 3) == NULL);
-  //Get from an invalid position
+  /* Get from an invalid position */
   assert(gll_get(list, -1) == NULL); 
 
-  //Get valid elements
+  /* Get valid elements */
   assert(gll_get(list, 0) == &a);
   assert(gll_get(list, 1) == &b);
   assert(gll_get(list, 2) == &c); 
@@ -97,12 +97,46 @@ static void test_gll_get()
 
 static void test_gll_first() 
 {
-  assert(1 == 2);
+  gll_t *list = gll_init();
+  
+  /* empty list */
+  assert(gll_first(list) == NULL);  
+  
+  char  a = 'A';
+  int   b = 15;
+  char *c = "str";
+
+  gll_push(list, &a);
+  gll_push(list, &b);
+  gll_push(list, &c);
+
+  assert(gll_first(list) == &a);
+  gll_popFront(list);
+  assert(gll_first(list) == &b);
+
+  gll_destroy(list);
 }
 
 static void test_gll_last()
 { 
-  assert(1 == 2);
+  gll_t *list = gll_init();
+  
+  /* empty list */
+  assert(gll_last(list) == NULL);  
+  
+  char  a = 'A';
+  int   b = 15;
+  char *c = "str";
+
+  gll_push(list, &a);
+  gll_push(list, &b);
+  gll_push(list, &c);
+
+  assert(gll_last(list) == &c);
+  gll_pop(list);
+  assert(gll_last(list) == &b);
+
+  gll_destroy(list);
 }
 
 static void test_gll_add() 
@@ -114,13 +148,13 @@ static void test_gll_add()
   char *c = "str";
   float d = 0.5;
   
-  //Add at an invalid position
+  /* Add at an invalid position */
   assert(gll_add(list, &a, 1) == C_NOK);
   assert(gll_add(list, &a, -1) == C_NOK);
 
   assert(list->size == 0);
 
-  //add to an empty list
+  /* add to an empty list */
   assert(gll_add(list, &c, 0) == C_OK);
   assert(list->size == 1);
   assert(list->first->data == &c);
@@ -128,7 +162,7 @@ static void test_gll_add()
   assert(list->first->prev == NULL);
   assert(list->first->next == NULL);
 
-  //add to the front
+  /* add to the front */
   assert(gll_add(list, &a, 0) == C_OK);
   assert(list->size == 2);
   assert(list->first->data == &a);
@@ -138,7 +172,7 @@ static void test_gll_add()
   assert(list->first->prev == NULL);
   assert(list->last->next == NULL);
   
-  //add in the middle
+  /* add in the middle */
   assert(gll_add(list, &b, 1) == C_OK);
   assert(list->size == 3);
   assert(list->first->data == &a);
@@ -152,7 +186,7 @@ static void test_gll_add()
   assert(list->last->next == NULL);
   assert(list->last->prev->data == &b);
 
-  //add at the end
+  /* add at the end */
   assert(gll_add(list, &d, 3) == C_OK);
   assert(list->size == 4);
   assert(list->last->data == &d);
@@ -175,7 +209,7 @@ static void test_gll_remove()
   float d = 0.5;
   int   e = 5;
 
-  //remove from an empty list
+  /* remove from an empty list */
   assert(gll_remove(list, 0) == C_NOK);
 
   gll_push(list, &a);
@@ -185,14 +219,14 @@ static void test_gll_remove()
 
   assert(list->size == 4);
 
-  //remove from front
+  /* remove from front */
   assert(gll_remove(list, 0) == C_OK);
   assert(list->size == 3);
   assert(list->first->data == &b);
   assert(list->first->prev == NULL);
   assert(list->first->next->data == &c);
 
-  //remove from middle
+  /* remove from middle */
   assert(gll_remove(list, 1) == C_OK);
   assert(list->size == 2);
   assert(list->first->data == &b);
@@ -202,7 +236,7 @@ static void test_gll_remove()
   assert(list->last->prev->data == &b);  
   assert(list->last->next == NULL);  
 
-  //remove from end
+  /* remove from end */
   gll_push(list, &e);
 
   assert(gll_remove(list, 2) == C_OK);
@@ -214,7 +248,7 @@ static void test_gll_remove()
   assert(list->last->prev->data == &b);
   assert(list->last->next == NULL);
 
-  //remove last remaining element
+  /* remove last remaining element */
   assert(gll_remove(list, 1) == C_OK);
   assert(list->size == 1);
 
