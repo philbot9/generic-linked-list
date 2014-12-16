@@ -1,32 +1,69 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "GenericLinkedList.h"
+#include "gll.h"
 
-LinkedListType *gll_init() {
-  LinkedListType *list = (LinkedListType *) malloc(sizeof(LinkedListType));
+#define C_OK 0
+#define C_NOK -1
+
+static gll_node_t *gll_findNode(gll_t *, int);
+static gll_node_t *gll_initNode(void *);
+
+/*  
+ * Initialize a new list
+ * returns:   pointer to new list
+ */
+gll_t *gll_init() {
+  gll_t *list = (gll_t *) malloc(sizeof(gll_t));
   list->size = 0;
   list->first = NULL;
   list->last = NULL;
   return list;
 }
 
-void *gll_get(int pos, LinkedListType *list) {
-  NodeType *node =  gll_findNode(pos, list);
+/*
+ * Helper function:
+ * Initialize a new node
+ * in:        pointer to data
+ * returns:   pointer to new node
+ */
+static gll_node_t *gll_initNode(void *data) {
+  gll_node_t *node = (gll_node_t *) malloc(sizeof(gll_node_t));
+  node->data = data;
+  node->prev = NULL;
+  node->next = NULL;
+  return node;
+}
+
+/*
+ * Get element at arbitrary position 
+ * in:        pointer to list
+ * in:        position
+ * returns:   void pointer to data / NULL on failure
+ */
+void *gll_get(gll_t *list, int pos) {
+  gll_node_t *node = gll_findNode(list, pos);
   if(node != NULL) 
     return node->data;
   else
     return NULL;
 }
 
-static NodeType *gll_findNode(int pos, LinkedListType *list) {
+/*
+ * Helper function:
+ * Find node at a given position
+ * in:        pointer to list
+ * in:        position
+ * returns:   pointer to Node / NULL on failure
+ */
+static gll_node_t *gll_findNode(gll_t *list, int pos) {
   if(pos > list->size || pos < 0)
     return NULL;  
 
-  NodeType *currNode;
+  gll_node_t *currNode;
   int currPos;
-  int reverse;
-  
+  int reverse; 
    
+  /* decide where to start iterating from (font or back of the list) */
   if(pos > ((list->size-1) / 2)) {
     reverse  = 1;
     currPos  = list->size - 1;
@@ -49,20 +86,24 @@ static NodeType *gll_findNode(int pos, LinkedListType *list) {
   return currNode;
 }
 
-int gll_add(void *data, int pos, LinkedListType *list) {
+/*
+ * Add new element add an arbitray position
+ * in:        pointer to list
+ * in:        pointer to data
+ * in:        position
+ * returns:   0 on success, -1 on failure
+ */
+int gll_add(gll_t *list, void *data, int pos) {
   if(pos > list->size || pos < 0)
     return C_NOK;
 
-  NodeType *newNode;
-  NodeType *currNode;
+  gll_node_t *newNode;
+  gll_node_t *currNode;
 
-  //Create the new node
-  newNode = (NodeType *) malloc(sizeof(NodeType));
-  newNode->data = data;
-  newNode->prev = NULL;
-  newNode->next = NULL;
+  /* Create the new node */
+  newNode = gll_initNode(data);
 
-  //if list is empty
+  /* if list is empty */
   if(list->size == 0) {
     list->first = newNode;
     list->last = newNode;
@@ -71,10 +112,10 @@ int gll_add(void *data, int pos, LinkedListType *list) {
     return C_OK;
   }
   
-  //if list is note empty
-  currNode = gll_findNode(pos, list);
+  /* if list is not empty */
+  currNode = gll_findNode(list, pos);
 
-  //adding at the front or in the middle
+  /* adding at the front or in the middle */
   if(currNode != NULL) {
     newNode->prev = currNode->prev;
     newNode->next = currNode;  
@@ -86,7 +127,7 @@ int gll_add(void *data, int pos, LinkedListType *list) {
 
     currNode->prev = newNode;
   } 
-  //adding at the end
+  /* adding at the end */
   else {
     list->last->next = newNode;
     newNode->prev = list->last;
@@ -97,17 +138,22 @@ int gll_add(void *data, int pos, LinkedListType *list) {
   return C_OK;
 }
 
-int gll_push(void *data, LinkedListType *list) {
-  NodeType *newNode = (NodeType *) malloc(sizeof(NodeType));
-  newNode->data = data;
-  newNode->prev = NULL;
-  newNode->next = NULL;
 
-  //if list is empty
+/*
+ * add element to end of list
+ * in:        pointer to list
+ * in:        pointer to data
+ * returns:   0 on success, -1 on failure
+ */
+int gll_push(gll_t *list, void *data) {
+  /* initialize new node */
+  gll_node_t *newNode = gll_initNode(data);
+
+  /* if list is empty */
   if(list->size == 0) {
     list->first = newNode;
   }
-  //if there is at least one element
+  /* if there is at least one element */
   else {
     list->last->next = newNode;
     newNode->prev = list->last;
@@ -118,17 +164,20 @@ int gll_push(void *data, LinkedListType *list) {
   return C_OK;
 }
 
-int gll_pushFront(void *data, LinkedListType *list) {
-  NodeType *newNode = (NodeType *) malloc(sizeof(NodeType));
-  newNode->data = data;
-  newNode->prev = NULL;
-  newNode->next = NULL;
+/*
+ * add element to front of list
+ * in:        pointer to list
+ * in:        pointer to data
+ * returns:   0 on success, -1 on failure
+ */
+int gll_pushFront(gll_t *list, void *data) {
+  gll_node_t *newNode = gll_initNode(data); 
 
-  //if list is empty
+  /* if list is empty */
   if(list->size == 0) {
     list->last = newNode;
   }
-  //if there is at least one element
+  /* if there is at least one element */
   else {
     list->first->prev = newNode;
     newNode->next = list->first;
@@ -139,10 +188,16 @@ int gll_pushFront(void *data, LinkedListType *list) {
   return C_OK;
 }
 
-int gll_remove(int pos, LinkedListType *list) {
-  NodeType *currNode = gll_findNode(pos, list);
 
-  //element not found
+/*
+ * remove node from an arbitrary position
+ * in:        pointer to list
+ * in:        pointer to data
+ * returns:   0 on success, -1 on failure
+ */
+int gll_remove(gll_t *list, int pos) {
+  gll_node_t *currNode = gll_findNode(list, pos);
+
   if(currNode == NULL)
     return C_NOK;
 
@@ -161,34 +216,52 @@ int gll_remove(int pos, LinkedListType *list) {
   return C_OK;
 }
 
-void *gll_pop(LinkedListType *list) {
-  NodeType *e = list->last;
-  if(e == NULL)
+/*
+ * remove the last element from the list
+ * in:        pointer to list
+ * returns:   pointer to data of last node/NULL if empty
+ */ 
+void *gll_pop(gll_t *list) {
+  gll_node_t *node = list->last;
+  if(node == NULL)
     return NULL;
 
-  void *data = e->data;
+  void *data = node->data;
 
-  if(gll_remove((list->size-1), list) != C_OK)
-    return NULL;
-
-  return data;
-}
-
-void *gll_popFront(LinkedListType *list) {
-  NodeType *e = list->first;
-  if(e == NULL)
-    return NULL;
-
-  void *data = e->data;
-
-  if(gll_remove(0, list) != C_OK)
+  if(gll_remove(list, (list->size-1)) != C_OK)
     return NULL;
 
   return data;
 }
 
-void gll_each(void (*f)(void *), LinkedListType *list) {
-  NodeType *currNode = list->first;
+/*
+ * remove the first element from the list
+ * in:        pointer to list
+ * returns:   pointer to data of first node/NULL if empty
+ */
+void *gll_popFront(gll_t *list) {
+  gll_node_t *node = list->first;
+  if(node == NULL)
+    return NULL;
+
+  void *data = node->data;
+
+  if(gll_remove(list, 0) != C_OK)
+    return NULL;
+
+  return data;
+}
+
+/*
+ * iterates over the entire list from the beginning and 
+ * calls the specified function with with each element.
+ * in:        pointer to list
+ * in:        pointer to function
+ *            ** function must be of return type void and
+ *            ** take void pointer as parameter
+ */
+void gll_each(gll_t *list, void (*f)(void *)) {
+  gll_node_t *currNode = list->first;
 
   while(currNode != NULL) {
     (*f)(currNode->data);
@@ -196,8 +269,16 @@ void gll_each(void (*f)(void *), LinkedListType *list) {
   }
 }
 
-void gll_eachReverse(void (*f)(void *), LinkedListType *list) {
-  NodeType *currNode = list->last;
+/*
+ * iterates over the entire list from the end and
+ * calls the specified function with each element.
+ * in:        pointer to list
+ * in:        pointer to function
+ *            ** function must be of return type void and
+ *            ** take void pointer as parameter
+ */
+void gll_eachReverse(gll_t *list, void (*f)(void *)) {
+  gll_node_t *currNode = list->last;
 
   while(currNode != NULL) {
     (*f)(currNode->data);
@@ -205,14 +286,25 @@ void gll_eachReverse(void (*f)(void *), LinkedListType *list) {
   }
 }
 
-void gll_clear(LinkedListType **list) {
-  gll_destroy(*list);
-  *list = gll_init();
+
+/*
+ * destroys the list and allocates a new (empty)
+ * in its memory location
+ * in:        pointer to list
+ */
+void gll_clear(gll_t *list) {
+  gll_destroy(list);
+  list = gll_init();
 }
 
-void gll_destroy(LinkedListType *list) {
-  NodeType *currNode = list->first;
-  NodeType *nextNode;
+/*
+ * destroys a list and frees all list related memory
+ * Does not touch the data stored at the nodes!
+ * in:        pointer to list
+ */
+void gll_destroy(gll_t *list) {
+  gll_node_t *currNode = list->first;
+  gll_node_t *nextNode;
   
   while(currNode != NULL) {
     nextNode = currNode->next;

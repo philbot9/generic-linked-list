@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "GenericLinkedList.h"
+#include "gll.h"
 
 static float start();
 static void stop(float);
@@ -18,7 +18,7 @@ static void run_gll_each();
 static void run_gll_eachReverse();
 
 static int NUM_NODES;
-LinkedListType *LIST;
+gll_t *LIST;
 
 int main(int argc, char **argv) {
   NUM_NODES = 10000000;
@@ -136,7 +136,7 @@ static void run_gll_push() {
   float startT = start();
 
   for(i = 0; i < NUM_NODES; i++)
-    gll_push(&ptr, LIST);
+    gll_push(LIST, &ptr);
 
   stop(startT);
 }
@@ -157,7 +157,7 @@ static void run_gll_pushFront() {
   float startT = start();
 
   for(i = 0; i < NUM_NODES; i++)
-    gll_pushFront(&ptr, LIST);
+    gll_pushFront(LIST, &ptr);
 
   stop(startT);
 }
@@ -176,21 +176,21 @@ static void run_gll_add(int pos) {
   int i = 10;
   float startT = start();
 
-  gll_add(&i, pos, LIST);
+  gll_add(LIST, &i, pos);
 
   stop(startT);
 }
 
 static void run_gll_get(int pos) {
   float startT = start();
-  gll_get(pos, LIST);
+  gll_get(LIST, pos);
   stop(startT);
 }
 
 
 static void run_gll_remove(int pos) {
   float startT = start();
-  gll_remove(pos, LIST);
+  gll_remove(LIST, pos);
   stop(startT);
 }
 
@@ -198,13 +198,13 @@ void dummyFunction(void* ptr) {}
 
 static void run_gll_each() {
   float startT = start();
-  gll_each(dummyFunction, LIST);
+  gll_each(LIST, dummyFunction);
   stop(startT);
 }
 
 static void run_gll_eachReverse() {
   float startT = start();
-  gll_eachReverse(dummyFunction, LIST);
+  gll_eachReverse(LIST, dummyFunction);
   stop(startT);
 }
 

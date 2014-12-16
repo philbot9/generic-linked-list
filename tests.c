@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
-#include "GenericLinkedList.h"
+#include "gll.h"
 
 #define MAX_STR 32
 #define C_OK    0
@@ -27,7 +27,7 @@ void each_test_function(void *);
 int each_a;
 int each_b;
 int each_c;
-LinkedListType *each_list;
+gll_t *each_list;
 
 
 int main(int argc, char *argv) {
@@ -61,34 +61,34 @@ int main(int argc, char *argv) {
 }
 
 static void test_gll_get() {
-  LinkedListType *list = gll_init();
+  gll_t *list = gll_init();
   
   //Get from an empty list
-  assert(gll_get(0, list) == NULL);  
+  assert(gll_get(list, 0) == NULL);  
   
   char  a = 'A';
   int   b = 15;
   char *c = "str";
 
-  gll_push(&a, list);
-  gll_push(&b, list);
-  gll_push(&c, list);
+  gll_push(list, &a);
+  gll_push(list, &b);
+  gll_push(list, &c);
 
   //Get from an unused position
-  assert(gll_get(3, list) == NULL);
+  assert(gll_get(list, 3) == NULL);
   //Get from an invalid position
-  assert(gll_get(-1, list) == NULL); 
+  assert(gll_get(list, -1) == NULL); 
 
   //Get valid elements
-  assert(gll_get(0, list) == &a);
-  assert(gll_get(1, list) == &b);
-  assert(gll_get(2, list) == &c); 
+  assert(gll_get(list, 0) == &a);
+  assert(gll_get(list, 1) == &b);
+  assert(gll_get(list, 2) == &c); 
 
   gll_destroy(list);
 }
 
 static void test_gll_add() {
-  LinkedListType *list = gll_init();
+  gll_t *list = gll_init();
   
   char  a = 'A';
   int   b = 15;
@@ -96,13 +96,13 @@ static void test_gll_add() {
   float d = 0.5;
   
   //Add at an invalid position
-  assert(gll_add(&a, 1, list) == C_NOK);
-  assert(gll_add(&a, -1, list) == C_NOK);
+  assert(gll_add(list, &a, 1) == C_NOK);
+  assert(gll_add(list, &a, -1) == C_NOK);
 
   assert(list->size == 0);
 
   //add to an empty list
-  assert(gll_add(&c, 0, list) == C_OK);
+  assert(gll_add(list, &c, 0) == C_OK);
   assert(list->size == 1);
   assert(list->first->data == &c);
   assert(list->last->data  == &c);
@@ -110,7 +110,7 @@ static void test_gll_add() {
   assert(list->first->next == NULL);
 
   //add to the front
-  assert(gll_add(&a, 0, list) == C_OK);
+  assert(gll_add(list, &a, 0) == C_OK);
   assert(list->size == 2);
   assert(list->first->data == &a);
   assert(list->last->data  == &c);
@@ -120,7 +120,7 @@ static void test_gll_add() {
   assert(list->last->next == NULL);
   
   //add in the middle
-  assert(gll_add(&b, 1, list) == C_OK);
+  assert(gll_add(list, &b, 1) == C_OK);
   assert(list->size == 3);
   assert(list->first->data == &a);
   assert(list->first->next->data == &b);
@@ -134,7 +134,7 @@ static void test_gll_add() {
   assert(list->last->prev->data == &b);
 
   //add at the end
-  assert(gll_add(&d, 3, list) == C_OK);
+  assert(gll_add(list, &d, 3) == C_OK);
   assert(list->size == 4);
   assert(list->last->data == &d);
   assert(list->last->next == NULL);
@@ -147,7 +147,7 @@ static void test_gll_add() {
 }
 
 static void test_gll_remove() {
-  LinkedListType *list = gll_init();
+  gll_t *list = gll_init();
   
   char  a = 'A';
   int   b = 15;
@@ -156,24 +156,24 @@ static void test_gll_remove() {
   int   e = 5;
 
   //remove from an empty list
-  assert(gll_remove(0, list) == C_NOK);
+  assert(gll_remove(list, 0) == C_NOK);
 
-  gll_push(&a, list);
-  gll_push(&b, list);
-  gll_push(&c, list);
-  gll_push(&d, list);
+  gll_push(list, &a);
+  gll_push(list, &b);
+  gll_push(list, &c);
+  gll_push(list, &d);
 
   assert(list->size == 4);
 
   //remove from front
-  assert(gll_remove(0, list) == C_OK);
+  assert(gll_remove(list, 0) == C_OK);
   assert(list->size == 3);
   assert(list->first->data == &b);
   assert(list->first->prev == NULL);
   assert(list->first->next->data == &c);
 
   //remove from middle
-  assert(gll_remove(1, list) == C_OK);
+  assert(gll_remove(list, 1) == C_OK);
   assert(list->size == 2);
   assert(list->first->data == &b);
   assert(list->first->prev == NULL);
@@ -183,9 +183,9 @@ static void test_gll_remove() {
   assert(list->last->next == NULL);  
 
   //remove from end
-  gll_push(&e, list);
+  gll_push(list, &e);
 
-  assert(gll_remove(2, list) == C_OK);
+  assert(gll_remove(list, 2) == C_OK);
   assert(list->size == 2);
   assert(list->first->data == &b);
   assert(list->first->next->data == &d);
@@ -195,10 +195,10 @@ static void test_gll_remove() {
   assert(list->last->next == NULL);
 
   //remove last remaining element
-  assert(gll_remove(1, list) == C_OK);
+  assert(gll_remove(list, 1) == C_OK);
   assert(list->size == 1);
 
-  assert(gll_remove(0, list) == C_OK);
+  assert(gll_remove(list, 0) == C_OK);
   assert(list->size == 0);
   assert(list->first == NULL);
   assert(list->last == NULL);
@@ -207,7 +207,7 @@ static void test_gll_remove() {
 }
 
 static void test_gll_push() {
-  LinkedListType *list = gll_init();
+  gll_t *list = gll_init();
   
   char  a = 'A';
   int   b = 15;
@@ -215,14 +215,14 @@ static void test_gll_push() {
 
   assert(list->size == 0);
   
-  assert(gll_push(&a, list) == C_OK);
+  assert(gll_push(list, &a) == C_OK);
   assert(list->size == 1);
   assert(list->first->data == &a);
   assert(list->first->prev == NULL);
   assert(list->first->next == NULL);
   assert(list->last->data == &a);
 
-  assert(gll_push(&b, list) == C_OK);
+  assert(gll_push(list, &b) == C_OK);
   assert(list->size == 2);
   assert(list->first->data == &a);
   assert(list->first->next->data == &b);
@@ -230,7 +230,7 @@ static void test_gll_push() {
   assert(list->last->prev->data == &a);
   assert(list->last->next == NULL);
 
-  assert(gll_push(&c, list) == C_OK);
+  assert(gll_push(list, &c) == C_OK);
   assert(list->size == 3);
   assert(list->last->data == &c);
   assert(list->last->prev->data == &b);
@@ -240,7 +240,7 @@ static void test_gll_push() {
 }
 
 static void test_gll_pushFront() {
-  LinkedListType *list = gll_init();
+  gll_t *list = gll_init();
   
   char  a = 'A';
   int   b = 15;
@@ -248,14 +248,14 @@ static void test_gll_pushFront() {
 
   assert(list->size == 0);
   
-  assert(gll_pushFront(&c, list) == C_OK);
+  assert(gll_pushFront(list, &c) == C_OK);
   assert(list->size == 1);
   assert(list->first->data == &c);
   assert(list->first->prev == NULL);
   assert(list->first->next == NULL);
   assert(list->last->data == &c);
 
-  assert(gll_pushFront(&b, list) == C_OK);
+  assert(gll_pushFront(list, &b) == C_OK);
   assert(list->size == 2);
   assert(list->first->data == &b);
   assert(list->first->next->data == &c);
@@ -264,7 +264,7 @@ static void test_gll_pushFront() {
   assert(list->last->prev->data == &b);
   assert(list->last->next == NULL);
 
-  assert(gll_pushFront(&a, list) == C_OK);
+  assert(gll_pushFront(list, &a) == C_OK);
   assert(list->size == 3);
   assert(list->first->data = &a);
   assert(list->first->next->data = &b);
@@ -277,15 +277,15 @@ static void test_gll_pushFront() {
 
 
 static void test_gll_pop() {
-  LinkedListType *list = gll_init();
+  gll_t *list = gll_init();
   
   char  a = 'A';
   int   b = 15;
   char *c = "str";
 
-  gll_push(&a, list);
-  gll_push(&b, list);
-  gll_push(&c, list);
+  gll_push(list, &a);
+  gll_push(list, &b);
+  gll_push(list, &c);
   assert(list->size == 3);
 
   assert(gll_pop(list) == &c);
@@ -308,15 +308,15 @@ static void test_gll_pop() {
 }
 
 static void test_gll_popFront() {
-  LinkedListType *list = gll_init();
+  gll_t *list = gll_init();
   
   char  a = 'A';
   int   b = 15;
   char *c = "str";
 
-  gll_push(&a, list);
-  gll_push(&b, list);
-  gll_push(&c, list);
+  gll_push(list, &a);
+  gll_push(list, &b);
+  gll_push(list, &c);
   assert(list->size == 3);
 
   assert(gll_popFront(list) == &a);
@@ -338,26 +338,26 @@ static void test_gll_popFront() {
 
 
 void each_test_function(void *x) {
-  gll_push(x, each_list);
+  gll_push(each_list, x);
 }
 
 static void test_gll_each() {
   each_list = gll_init();
-  LinkedListType *list = gll_init();
+  gll_t *list = gll_init();
 
   each_a = 1;
   each_b = 2;
   each_c = 3;
 
-  gll_push(&each_a, list);
-  gll_push(&each_b, list);
-  gll_push(&each_c, list);
+  gll_push(list, &each_a);
+  gll_push(list, &each_b);
+  gll_push(list, &each_c);
 
-  gll_each(each_test_function, list);
+  gll_each(list, each_test_function);
 
-  assert(gll_get(0, each_list) == &each_a);
-  assert(gll_get(1, each_list) == &each_b);
-  assert(gll_get(2, each_list) == &each_c);
+  assert(gll_get(each_list, 0) == &each_a);
+  assert(gll_get(each_list, 1) == &each_b);
+  assert(gll_get(each_list, 2) == &each_c);
   
   gll_destroy(each_list);
   gll_destroy(list);
@@ -365,39 +365,39 @@ static void test_gll_each() {
 
 static void test_gll_eachReverse() {
   each_list = gll_init();
-  LinkedListType *list = gll_init();
+  gll_t *list = gll_init();
 
   each_a = 1;
   each_b = 2;
   each_c = 3;
 
-  gll_push(&each_a, list);
-  gll_push(&each_b, list);
-  gll_push(&each_c, list);
+  gll_push(list, &each_a);
+  gll_push(list, &each_b);
+  gll_push(list, &each_c);
 
-  gll_eachReverse(each_test_function, list);
+  gll_eachReverse(list, each_test_function);
 
-  assert(gll_get(2, each_list) == &each_a);
-  assert(gll_get(1, each_list) == &each_b);
-  assert(gll_get(0, each_list) == &each_c);
+  assert(gll_get(each_list, 2) == &each_a);
+  assert(gll_get(each_list, 1) == &each_b);
+  assert(gll_get(each_list, 0) == &each_c);
   
   gll_destroy(each_list);
   gll_destroy(list);
 }
 
 static void test_gll_clear() {
-  LinkedListType *list = gll_init();
+  gll_t *list = gll_init();
   
   char  a = 'A';
   int   b = 15;
   char *c = "str";
 
-  gll_push(&a, list);
-  gll_push(&b, list);
-  gll_push(&c, list);
+  gll_push(list, &a);
+  gll_push(list, &b);
+  gll_push(list, &c);
 
   assert(list->size == 3);
-  gll_clear(&list);
+  gll_clear(list);
   assert(list->size == 0);
   assert(list->first == NULL);
   assert(list->last == NULL);
