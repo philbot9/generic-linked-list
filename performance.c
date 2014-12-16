@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "gll.h"
+#include "src/gll.h"
 
 static float start();
 static void stop(float);

@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
-#include "gll.h"
+#include "src/gll.h"
 
 #define MAX_STR 32
 #define C_OK    0

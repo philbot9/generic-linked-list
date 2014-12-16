@@ -1,21 +1,21 @@
-OBJ_TEST = gll.o tests.o
-OBJ_PERF = gll.o performance.o
+OBJ_TEST = src/gll.o tests.o
+OBJ_PERF = src/gll.o performance.o
 
-gll.o:	gll.c gll.h
-	gcc -c gll.c
+gll.o:	src/gll.c src/gll.h
+	gcc -c src/gll.c -o src/gll.o
 
-tests.o:	tests.c gll.h
+tests.o:	tests.c src/gll.h
 	gcc -c tests.c
 
-performance.o:	performance.c gll.h
+performance.o:	performance.c src/gll.h
 	gcc -c performance.c
 
-tests:	$(OBJ_TEST) gll.h
+tests:	$(OBJ_TEST) src/gll.h
 	gcc -o tests $(OBJ_TEST)
 
-performance:	$(OBJ_PERF) gll.h
+performance:	$(OBJ_PERF) src/gll.h
 	gcc -o performance $(OBJ_PERF)
 
 clean:
-	-rm *.o tests performance
+	-rm *.o src/*.o tests performance
 
