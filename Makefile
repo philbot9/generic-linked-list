@@ -1,14 +1,22 @@
-OBJ_TEST = src/gll.o tests.o
-OBJ_PERF = src/gll.o performance.o
+OBJ_TEST = src/gll.o bin/tests.o
+OBJ_PERF = src/gll.o bin/performance.o
 
-gll.o:	src/gll.c src/gll.h
+all:	build/libgll.a
+
+build/libgll.a:	src/gll.o src/gll.h
+	-mkdir -p build
+	ar rcs build/libgll.a src/gll.o
+
+src/gll.o:	src/gll.c src/gll.h
 	gcc -c src/gll.c -o src/gll.o
 
-tests.o:	tests.c src/gll.h
-	gcc -c tests.c
+bin/tests.o:	tests.c src/gll.h
+	-mkdir -p bin
+	gcc -c tests.c -o bin/tests.o
 
-performance.o:	performance.c src/gll.h
-	gcc -c performance.c
+bin/performance.o:	performance.c src/gll.h
+	-mkdir -p bin
+	gcc -c performance.c -o bin/performance.o
 
 tests:	$(OBJ_TEST) src/gll.h
 	gcc -o tests $(OBJ_TEST)
@@ -17,5 +25,5 @@ performance:	$(OBJ_PERF) src/gll.h
 	gcc -o performance $(OBJ_PERF)
 
 clean:
-	-rm *.o src/*.o tests performance
+	-rm -fr build bin *.o src/*.o tests performance
 
