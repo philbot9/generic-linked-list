@@ -7,8 +7,8 @@ static float start();
 static void stop(float);
 static void run_gll_push();
 static void run_gll_pop();
-static void run_gll_pushFront();
-static void run_gll_popFront();
+static void run_gll_pushBack();
+static void run_gll_popBack();
 
 static void run_gll_add();
 static void run_gll_get();
@@ -34,11 +34,11 @@ int main(int argc, char **argv)
 
   printf("\nNumber of Nodes: %d\n\n", NUM_NODES);
 
-  printf("  gll_push() (All):            ");
+  printf("  gll_pushBack() (All):        ");
   fflush(stdout);
   run_gll_push(); 
 
-  printf("  gll_pop() (All):             ");
+  printf("  gll_popBack() (All):         ");
   fflush(stdout);
   run_gll_pop(); 
 
@@ -46,22 +46,22 @@ int main(int argc, char **argv)
   LIST = gll_init();
   
 
-  printf("  gll_pushFront() (All):       ");
+  printf("  gll_push() (All):            ");
   fflush(stdout);
-  run_gll_pushFront(); 
+  run_gll_push(); 
   
-  printf("  gll_popFront() (All):        ");
+  printf("  gll_pop() (All):             ");
   fflush(stdout);
-  run_gll_popFront(); 
+  run_gll_pop(); 
 
   gll_destroy(LIST);
   LIST = gll_init();
    
 
   printf("\n");
-  printf("  gll_push() (All):            ");
+  printf("  gll_pushBack() (All):        ");
   fflush(stdout);
-  run_gll_push(); 
+  run_gll_pushBack(); 
 
 
   printf("\n");
@@ -130,7 +130,30 @@ static float start()
 static void stop(float startTime) 
 {
   float time = ((clock() - startTime) / CLOCKS_PER_SEC) * 1000.0;
-  printf("%8.4f ms\n", time);
+  printf("%9.4f ms\n", time);
+}
+
+static void run_gll_pushBack() 
+{
+  volatile int i;
+  volatile void *ptr = &i;
+  float startT = start();
+
+  for(i = 0; i < NUM_NODES; i++)
+    gll_pushBack(LIST, &ptr);
+
+  stop(startT);
+}
+
+static void run_gll_popBack() 
+{
+  volatile int i;
+  float startT = start();
+
+  for(i = 0; i < NUM_NODES; i++)
+    gll_popBack(LIST);
+
+  stop(startT);
 }
 
 static void run_gll_push() 
@@ -152,29 +175,6 @@ static void run_gll_pop()
 
   for(i = 0; i < NUM_NODES; i++)
     gll_pop(LIST);
-
-  stop(startT);
-}
-
-static void run_gll_pushFront() 
-{
-  volatile int i;
-  volatile void *ptr = &i;
-  float startT = start();
-
-  for(i = 0; i < NUM_NODES; i++)
-    gll_pushFront(LIST, &ptr);
-
-  stop(startT);
-}
-
-static void run_gll_popFront() 
-{
-  volatile int i;
-  float startT = start();
-
-  for(i = 0; i < NUM_NODES; i++)
-    gll_popFront(LIST);
 
   stop(startT);
 }

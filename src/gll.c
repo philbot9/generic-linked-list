@@ -169,6 +169,28 @@ int gll_add(gll_t *list, void *data, int pos)
   return C_OK;
 }
 
+/*
+ * add element to front of list
+ * in:        pointer to list
+ * in:        pointer to data
+ * returns:   0 on success, -1 on failure
+ */
+int gll_push(gll_t *list, void *data) 
+{
+  gll_node_t *newNode = gll_initNode(data); 
+
+  /* if list is empty */
+  if(list->size == 0) {
+    list->last = newNode;
+  } else {
+    /* if there is at least one element */
+    list->first->prev = newNode;
+    newNode->next = list->first;
+  }
+  list->first = newNode;
+  list->size++;
+  return C_OK;
+}
 
 /*
  * add element to end of list
@@ -176,7 +198,7 @@ int gll_add(gll_t *list, void *data, int pos)
  * in:        pointer to data
  * returns:   0 on success, -1 on failure
  */
-int gll_push(gll_t *list, void *data) 
+int gll_pushBack(gll_t *list, void *data) 
 {
   /* initialize new node */
   gll_node_t *newNode = gll_initNode(data);
@@ -195,31 +217,7 @@ int gll_push(gll_t *list, void *data)
 }
 
 /*
- * add element to front of list
- * in:        pointer to list
- * in:        pointer to data
- * returns:   0 on success, -1 on failure
- */
-int gll_pushFront(gll_t *list, void *data) 
-{
-  gll_node_t *newNode = gll_initNode(data); 
-
-  /* if list is empty */
-  if(list->size == 0) {
-    list->last = newNode;
-  } else {
-    /* if there is at least one element */
-    list->first->prev = newNode;
-    newNode->next = list->first;
-  }
-  list->first = newNode;
-  list->size++;
-  return C_OK;
-}
-
-
-/*
- * remove node from an arbitrary position
+ * remove from an arbitrary position
  * in:        pointer to list
  * in:        pointer to data
  * returns:   0 on success, -1 on failure
@@ -247,30 +245,11 @@ int gll_remove(gll_t *list, int pos)
 }
 
 /*
- * remove the last element from the list
- * in:        pointer to list
- * returns:   pointer to data of last node/NULL if empty
- */ 
-void *gll_pop(gll_t *list) 
-{
-  gll_node_t *node = list->last;
-  if(node == NULL)
-    return NULL;
-
-  void *data = node->data;
-
-  if(gll_remove(list, (list->size-1)) != C_OK)
-    return NULL;
-
-  return data;
-}
-
-/*
- * remove the first element from the list
+ * remove the head of the list and return its value
  * in:        pointer to list
  * returns:   pointer to data of first node/NULL if empty
  */
-void *gll_popFront(gll_t *list) 
+void *gll_pop(gll_t *list) 
 {
   gll_node_t *node = list->first;
   if(node == NULL)
@@ -279,6 +258,25 @@ void *gll_popFront(gll_t *list)
   void *data = node->data;
 
   if(gll_remove(list, 0) != C_OK)
+    return NULL;
+
+  return data;
+}
+
+/*
+ * remove the tail of the list and return its value
+ * in:        pointer to list
+ * returns:   pointer to data of last node/NULL if empty
+ */ 
+void *gll_popBack(gll_t *list) 
+{
+  gll_node_t *node = list->last;
+  if(node == NULL)
+    return NULL;
+
+  void *data = node->data;
+
+  if(gll_remove(list, (list->size-1)) != C_OK)
     return NULL;
 
   return data;

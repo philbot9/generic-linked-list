@@ -33,12 +33,12 @@ void *gll_last(gll_t *);
 /*  add functions */
 int gll_add(gll_t *, void *, int);
 int gll_push(gll_t *, void *);
-int gll_pushFront(gll_t *, void *);
+int gll_pushBack(gll_t *, void *);
 
 /*  remove functions */
 int gll_remove(gll_t *, int);
 void *gll_pop(gll_t *);
-void *gll_popFront(gll_t *);
+void *gll_popBack(gll_t *);
 
 /*  iterate functions */
 void gll_each(gll_t *, void (*f)(void *));

@@ -16,9 +16,9 @@ static void test_gll_get();
 static void test_gll_first();
 static void test_gll_last();
 static void test_gll_push();
-static void test_gll_pushFront();
+static void test_gll_pushBack();
 static void test_gll_pop();
-static void test_gll_popFront();
+static void test_gll_popBack();
 static void test_gll_each();
 static void test_gll_eachReverse();
 static void test_gll_clear();
@@ -48,12 +48,12 @@ int main(int argc, char *argv)
   test_gll_remove();
   printf(" gll_push\n");
   test_gll_push();
-  printf(" gll_pushFront\n");
-  test_gll_pushFront();
+  printf(" gll_pushBack\n");
+  test_gll_pushBack();
   printf(" gll_pop\n");
   test_gll_pop();
-  printf(" gll_popFront\n");
-  test_gll_popFront();
+  printf(" gll_popBack\n");
+  test_gll_popBack();
   printf(" gll_each\n");
   test_gll_each();
   printf(" gll_eachReverse\n");
@@ -78,9 +78,9 @@ static void test_gll_get()
   int   b = 15;
   char *c = "str";
 
-  gll_push(list, &a);
-  gll_push(list, &b);
-  gll_push(list, &c);
+  gll_pushBack(list, &a);
+  gll_pushBack(list, &b);
+  gll_pushBack(list, &c);
 
   /* Get from an unused position */
   assert(gll_get(list, 3) == NULL);
@@ -106,12 +106,12 @@ static void test_gll_first()
   int   b = 15;
   char *c = "str";
 
-  gll_push(list, &a);
-  gll_push(list, &b);
-  gll_push(list, &c);
+  gll_pushBack(list, &a);
+  gll_pushBack(list, &b);
+  gll_pushBack(list, &c);
 
   assert(gll_first(list) == &a);
-  gll_popFront(list);
+  gll_pop(list);
   assert(gll_first(list) == &b);
 
   gll_destroy(list);
@@ -128,12 +128,12 @@ static void test_gll_last()
   int   b = 15;
   char *c = "str";
 
-  gll_push(list, &a);
-  gll_push(list, &b);
-  gll_push(list, &c);
+  gll_pushBack(list, &a);
+  gll_pushBack(list, &b);
+  gll_pushBack(list, &c);
 
   assert(gll_last(list) == &c);
-  gll_pop(list);
+  gll_popBack(list);
   assert(gll_last(list) == &b);
 
   gll_destroy(list);
@@ -212,10 +212,10 @@ static void test_gll_remove()
   /* remove from an empty list */
   assert(gll_remove(list, 0) == C_NOK);
 
-  gll_push(list, &a);
-  gll_push(list, &b);
-  gll_push(list, &c);
-  gll_push(list, &d);
+  gll_pushBack(list, &a);
+  gll_pushBack(list, &b);
+  gll_pushBack(list, &c);
+  gll_pushBack(list, &d);
 
   assert(list->size == 4);
 
@@ -237,7 +237,7 @@ static void test_gll_remove()
   assert(list->last->next == NULL);  
 
   /* remove from end */
-  gll_push(list, &e);
+  gll_pushBack(list, &e);
 
   assert(gll_remove(list, 2) == C_OK);
   assert(list->size == 2);
@@ -260,6 +260,40 @@ static void test_gll_remove()
   gll_destroy(list);
 }
 
+static void test_gll_pushBack() 
+{
+  gll_t *list = gll_init();
+  
+  char  a = 'A';
+  int   b = 15;
+  char *c = "str";
+
+  assert(list->size == 0);
+  
+  assert(gll_pushBack(list, &a) == C_OK);
+  assert(list->size == 1);
+  assert(list->first->data == &a);
+  assert(list->first->prev == NULL);
+  assert(list->first->next == NULL);
+  assert(list->last->data == &a);
+
+  assert(gll_pushBack(list, &b) == C_OK);
+  assert(list->size == 2);
+  assert(list->first->data == &a);
+  assert(list->first->next->data == &b);
+  assert(list->last->data == &b);
+  assert(list->last->prev->data == &a);
+  assert(list->last->next == NULL);
+
+  assert(gll_pushBack(list, &c) == C_OK);
+  assert(list->size == 3);
+  assert(list->last->data == &c);
+  assert(list->last->prev->data == &b);
+  assert(list->last->prev->next->data == &c);
+
+  gll_destroy(list);
+}
+
 static void test_gll_push() 
 {
   gll_t *list = gll_init();
@@ -270,48 +304,14 @@ static void test_gll_push()
 
   assert(list->size == 0);
   
-  assert(gll_push(list, &a) == C_OK);
-  assert(list->size == 1);
-  assert(list->first->data == &a);
-  assert(list->first->prev == NULL);
-  assert(list->first->next == NULL);
-  assert(list->last->data == &a);
-
-  assert(gll_push(list, &b) == C_OK);
-  assert(list->size == 2);
-  assert(list->first->data == &a);
-  assert(list->first->next->data == &b);
-  assert(list->last->data == &b);
-  assert(list->last->prev->data == &a);
-  assert(list->last->next == NULL);
-
   assert(gll_push(list, &c) == C_OK);
-  assert(list->size == 3);
-  assert(list->last->data == &c);
-  assert(list->last->prev->data == &b);
-  assert(list->last->prev->next->data == &c);
-
-  gll_destroy(list);
-}
-
-static void test_gll_pushFront() 
-{
-  gll_t *list = gll_init();
-  
-  char  a = 'A';
-  int   b = 15;
-  char *c = "str";
-
-  assert(list->size == 0);
-  
-  assert(gll_pushFront(list, &c) == C_OK);
   assert(list->size == 1);
   assert(list->first->data == &c);
   assert(list->first->prev == NULL);
   assert(list->first->next == NULL);
   assert(list->last->data == &c);
 
-  assert(gll_pushFront(list, &b) == C_OK);
+  assert(gll_push(list, &b) == C_OK);
   assert(list->size == 2);
   assert(list->first->data == &b);
   assert(list->first->next->data == &c);
@@ -320,7 +320,7 @@ static void test_gll_pushFront()
   assert(list->last->prev->data == &b);
   assert(list->last->next == NULL);
 
-  assert(gll_pushFront(list, &a) == C_OK);
+  assert(gll_push(list, &a) == C_OK);
   assert(list->size == 3);
   assert(list->first->data = &a);
   assert(list->first->next->data = &b);
@@ -332,6 +332,38 @@ static void test_gll_pushFront()
 }
 
 
+static void test_gll_popBack() 
+{
+  gll_t *list = gll_init();
+  
+  char  a = 'A';
+  int   b = 15;
+  char *c = "str";
+
+  gll_pushBack(list, &a);
+  gll_pushBack(list, &b);
+  gll_pushBack(list, &c);
+  assert(list->size == 3);
+
+  assert(gll_popBack(list) == &c);
+  assert(list->first->data == &a);
+  assert(list->first->next->data == &b);
+  assert(list->last->data == &b);
+  assert(list->last->prev->data == &a);
+  assert(list->last->next == NULL);
+  assert(list->size == 2);
+
+  assert(gll_popBack(list) == &b);
+  assert(list->size == 1);
+
+  assert(gll_popBack(list) == &a);
+  assert(list->first == NULL);
+  assert(list->last == NULL);
+  assert(list->size == 0);
+
+  gll_destroy(list);
+}
+
 static void test_gll_pop() 
 {
   gll_t *list = gll_init();
@@ -340,53 +372,21 @@ static void test_gll_pop()
   int   b = 15;
   char *c = "str";
 
-  gll_push(list, &a);
-  gll_push(list, &b);
-  gll_push(list, &c);
+  gll_pushBack(list, &a);
+  gll_pushBack(list, &b);
+  gll_pushBack(list, &c);
   assert(list->size == 3);
-
-  assert(gll_pop(list) == &c);
-  assert(list->first->data == &a);
-  assert(list->first->next->data == &b);
-  assert(list->last->data == &b);
-  assert(list->last->prev->data == &a);
-  assert(list->last->next == NULL);
-  assert(list->size == 2);
-
-  assert(gll_pop(list) == &b);
-  assert(list->size == 1);
 
   assert(gll_pop(list) == &a);
-  assert(list->first == NULL);
-  assert(list->last == NULL);
-  assert(list->size == 0);
-
-  gll_destroy(list);
-}
-
-static void test_gll_popFront() 
-{
-  gll_t *list = gll_init();
-  
-  char  a = 'A';
-  int   b = 15;
-  char *c = "str";
-
-  gll_push(list, &a);
-  gll_push(list, &b);
-  gll_push(list, &c);
-  assert(list->size == 3);
-
-  assert(gll_popFront(list) == &a);
   assert(list->first->data == &b);
   assert(list->first->prev == NULL);
   assert(list->first->next->data == &c);
   assert(list->size == 2);
 
-  assert(gll_popFront(list) == &b);
+  assert(gll_pop(list) == &b);
   assert(list->size == 1);
 
-  assert(gll_popFront(list) == &c);
+  assert(gll_pop(list) == &c);
   assert(list->first == NULL);
   assert(list->last == NULL);
   assert(list->size == 0);
@@ -397,7 +397,7 @@ static void test_gll_popFront()
 
 void each_test_function(void *x) 
 {
-  gll_push(each_list, x);
+  gll_pushBack(each_list, x);
 }
 
 static void test_gll_each() 
@@ -409,9 +409,9 @@ static void test_gll_each()
   each_b = 2;
   each_c = 3;
 
-  gll_push(list, &each_a);
-  gll_push(list, &each_b);
-  gll_push(list, &each_c);
+  gll_pushBack(list, &each_a);
+  gll_pushBack(list, &each_b);
+  gll_pushBack(list, &each_c);
 
   gll_each(list, each_test_function);
 
@@ -432,9 +432,9 @@ static void test_gll_eachReverse()
   each_b = 2;
   each_c = 3;
 
-  gll_push(list, &each_a);
-  gll_push(list, &each_b);
-  gll_push(list, &each_c);
+  gll_pushBack(list, &each_a);
+  gll_pushBack(list, &each_b);
+  gll_pushBack(list, &each_c);
 
   gll_eachReverse(list, each_test_function);
 
@@ -454,9 +454,9 @@ static void test_gll_clear()
   int   b = 15;
   char *c = "str";
 
-  gll_push(list, &a);
-  gll_push(list, &b);
-  gll_push(list, &c);
+  gll_pushBack(list, &a);
+  gll_pushBack(list, &b);
+  gll_pushBack(list, &c);
 
   assert(list->size == 3);
   gll_clear(list);
