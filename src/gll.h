@@ -36,7 +36,7 @@ int gll_push(gll_t *, void *);
 int gll_pushBack(gll_t *, void *);
 
 /*  remove functions */
-int gll_remove(gll_t *, int);
+void *gll_remove(gll_t *, int);
 void *gll_pop(gll_t *);
 void *gll_popBack(gll_t *);
 

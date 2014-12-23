@@ -222,12 +222,15 @@ int gll_pushBack(gll_t *list, void *data)
  * in:        pointer to data
  * returns:   0 on success, -1 on failure
  */
-int gll_remove(gll_t *list, int pos) 
+void *gll_remove(gll_t *list, int pos) 
 {
   gll_node_t *currNode = gll_findNode(list, pos);
+  void *data = NULL;
 
   if(currNode == NULL)
-    return C_NOK;
+    return NULL;
+
+  data = currNode->data;
 
   if(currNode->prev == NULL) 
     list->first = currNode->next;
@@ -241,7 +244,7 @@ int gll_remove(gll_t *list, int pos)
 
   list->size--;
   free(currNode);
-  return C_OK;
+  return data;
 }
 
 /*
@@ -251,13 +254,16 @@ int gll_remove(gll_t *list, int pos)
  */
 void *gll_pop(gll_t *list) 
 {
+  if(!list)
+    return NULL;
+
   gll_node_t *node = list->first;
   if(node == NULL)
     return NULL;
 
   void *data = node->data;
 
-  if(gll_remove(list, 0) != C_OK)
+  if(gll_remove(list, 0) == NULL)
     return NULL;
 
   return data;
@@ -276,7 +282,7 @@ void *gll_popBack(gll_t *list)
 
   void *data = node->data;
 
-  if(gll_remove(list, (list->size-1)) != C_OK)
+  if(gll_remove(list, (list->size-1)) == NULL)
     return NULL;
 
   return data;

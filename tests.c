@@ -210,7 +210,7 @@ static void test_gll_remove()
   int   e = 5;
 
   /* remove from an empty list */
-  assert(gll_remove(list, 0) == C_NOK);
+  assert(gll_remove(list, 0) == NULL);
 
   gll_pushBack(list, &a);
   gll_pushBack(list, &b);
@@ -220,14 +220,14 @@ static void test_gll_remove()
   assert(list->size == 4);
 
   /* remove from front */
-  assert(gll_remove(list, 0) == C_OK);
+  assert(gll_remove(list, 0) == &a);
   assert(list->size == 3);
   assert(list->first->data == &b);
   assert(list->first->prev == NULL);
   assert(list->first->next->data == &c);
 
   /* remove from middle */
-  assert(gll_remove(list, 1) == C_OK);
+  assert(gll_remove(list, 1) == &c);
   assert(list->size == 2);
   assert(list->first->data == &b);
   assert(list->first->prev == NULL);
@@ -239,7 +239,7 @@ static void test_gll_remove()
   /* remove from end */
   gll_pushBack(list, &e);
 
-  assert(gll_remove(list, 2) == C_OK);
+  assert(gll_remove(list, 2) == &e);
   assert(list->size == 2);
   assert(list->first->data == &b);
   assert(list->first->next->data == &d);
@@ -249,10 +249,10 @@ static void test_gll_remove()
   assert(list->last->next == NULL);
 
   /* remove last remaining element */
-  assert(gll_remove(list, 1) == C_OK);
+  assert(gll_remove(list, 1) == &d);
   assert(list->size == 1);
 
-  assert(gll_remove(list, 0) == C_OK);
+  assert(gll_remove(list, 0) == &b);
   assert(list->size == 0);
   assert(list->first == NULL);
   assert(list->last == NULL);
