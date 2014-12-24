@@ -22,27 +22,31 @@ _ _ _
 ```
 Number of Nodes: 10000000
 
-  gll_pushBack() (All):         412.5400 ms
-  gll_popBack() (All):          332.7690 ms
-  gll_push() (All):             284.1720 ms
-  gll_pop() (All):              383.0570 ms
+  gll_pushBack() (All):        1016.8580 ms
+  gll_popBack() (All):          803.8800 ms
+  gll_push() (All):             655.6550 ms
+  gll_pop() (All):              793.6100 ms
 
-  gll_pushBack() (All):         280.4070 ms
+  gll_pushBack() (All):         660.2480 ms
 
-  1 * gll_get() (middle):        27.7840 ms
+  1 * gll_get() (middle):        55.3450 ms
   1 * gll_get() (end):            0.0030 ms
   1 * gll_get() (begin):          0.0010 ms
 
-  1 * gll_add() (middle):        25.8490 ms
-  1 * gll_add() (end):            0.0020 ms
-  1 * gll_add() (begin):          0.0010 ms
+  1 * gll_set() (middle):        56.5100 ms
+  1 * gll_set() (end):            0.0010 ms
+  1 * gll_set() (begin):          0.0010 ms
 
-  1 * gll_remove() (middle):     26.9550 ms
-  1 * gll_remove() (end):         0.0010 ms
+  1 * gll_add() (middle):        54.9220 ms
+  1 * gll_add() (end):            0.0040 ms
+  1 * gll_add() (begin):          0.0020 ms
+
+  1 * gll_remove() (middle):     55.1510 ms
+  1 * gll_remove() (end):         0.0030 ms
   1 * gll_remove() (begin):       0.0010 ms
 
-  gll_each():                    56.6070 ms
-  gll_eachReverse():             64.6820 ms
+  gll_each():                   122.4990 ms
+  gll_eachReverse():            123.8290 ms
 
 ```
 

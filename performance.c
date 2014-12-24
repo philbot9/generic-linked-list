@@ -10,9 +10,10 @@ static void run_gll_pop();
 static void run_gll_pushBack();
 static void run_gll_popBack();
 
-static void run_gll_add();
-static void run_gll_get();
-static void run_gll_remove();
+static void run_gll_add(int);
+static void run_gll_get(int);
+static void run_gll_set(int);
+static void run_gll_remove(int);
 
 static void run_gll_each();
 static void run_gll_eachReverse();
@@ -76,6 +77,20 @@ int main(int argc, char **argv)
   printf("  1 * gll_get() (begin):       ");
   fflush(stdout);
   run_gll_get(0); 
+
+
+  printf("\n");
+  printf("  1 * gll_set() (middle):      ");
+  fflush(stdout);
+  run_gll_set(NUM_NODES/2);
+
+  printf("  1 * gll_set() (end):         ");
+  fflush(stdout);
+  run_gll_set(NUM_NODES-1); 
+
+  printf("  1 * gll_set() (begin):       ");
+  fflush(stdout);
+  run_gll_set(0); 
 
 
   printf("\n");
@@ -196,6 +211,13 @@ static void run_gll_get(int pos)
   stop(startT);
 }
 
+static void run_gll_set(int pos)
+{
+  int i = 10;
+  float startT = start();
+  gll_set(LIST, &i, pos);
+  stop(startT);
+}
 
 static void run_gll_remove(int pos) 
 {
