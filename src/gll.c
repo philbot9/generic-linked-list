@@ -169,6 +169,27 @@ int gll_add(gll_t *list, void *data, int pos)
   return C_OK;
 }
 
+
+/*
+ * replace data of node at pos with new data
+ * in:        pointer to list
+ * in:        pointer to data
+ * in:        position in list
+ * returns:   data previously stored at pos
+ */
+void *gll_set(gll_t *list, void *data, int pos) 
+{
+  gll_node_t *currNode = gll_findNode(list, pos);
+
+  if(currNode == NULL)
+    return NULL;
+  
+  void *oldData = currNode->data;
+  currNode->data = data;
+
+  return oldData;
+}
+
 /*
  * add element to front of list
  * in:        pointer to list

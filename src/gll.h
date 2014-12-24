@@ -32,6 +32,7 @@ void *gll_last(gll_t *);
 
 /*  add functions */
 int gll_add(gll_t *, void *, int);
+void *gll_set(gll_t *, void *, int);
 int gll_push(gll_t *, void *);
 int gll_pushBack(gll_t *, void *);
 

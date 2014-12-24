@@ -11,6 +11,7 @@
 
 
 static void test_gll_add();
+static void test_gll_set();
 static void test_gll_remove();
 static void test_gll_get();
 static void test_gll_first();
@@ -38,6 +39,8 @@ int main(int argc, char *argv)
 
   printf(" gll_get\n");
   test_gll_get();
+  printf(" gll_set\n");
+  test_gll_set();
   printf(" gll_first\n");
   test_gll_first();
   printf(" gll_last\n");
@@ -91,6 +94,37 @@ static void test_gll_get()
   assert(gll_get(list, 0) == &a);
   assert(gll_get(list, 1) == &b);
   assert(gll_get(list, 2) == &c); 
+
+  gll_destroy(list);
+}
+
+static void test_gll_set()
+{
+  gll_t *list = gll_init();
+ 
+  char  a = 'A';
+  int   b = 15;
+  char *c = "str";
+
+  /* set in an empty list */
+  assert(gll_set(list, &a, 0) == NULL);  
+
+  gll_pushBack(list, &a);
+  gll_pushBack(list, &b);
+  gll_pushBack(list, &c);
+
+  /* Set at an unused position */
+  assert(gll_set(list, &a, 3) == NULL);
+  /* Set at an invalid position */
+  assert(gll_set(list, &a, -1) == NULL); 
+
+  /* Set valid elements */
+  assert(gll_set(list, &c,  0) == &a);
+  assert(list->first->data == &c);
+  assert(list->first->next->data == &b);
+  assert(gll_set(list, &a, 2) == &c); 
+  assert(list->last->data == &a);
+  assert(list->last->prev->data == &b);
 
   gll_destroy(list);
 }
