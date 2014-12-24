@@ -3,6 +3,14 @@ OBJ_PERF = src/gll.o bin/performance.o
 
 all:	build/libgll.a
 
+install: all
+	cp -f build/libgll.a /usr/local/lib/libgll.a
+	cp -f src/gll.h /usr/local/include/gll.h
+
+uninstall: 
+	rm -f /usr/local/lib/libgll.a
+	rm -f /usr/local/include/gll.h
+
 build/libgll.a:	src/gll.o src/gll.h
 	-mkdir -p build
 	ar rcs build/libgll.a src/gll.o
