@@ -51,6 +51,7 @@ Number of Nodes: 10000000
 ```
 make
 make install
+make uninstall
 ```
 
 ######Tests
@@ -63,6 +64,7 @@ make tests
 ```
 make performance
 ./performance
+./performance [number of nodes]
 ```
 
 
@@ -90,7 +92,7 @@ make performance
  * [gll_destroy](#anch_gll_destroy)
 
 
-#####__Types__
+####__Types__
 ---
 <a name="anch_gll_t"></a>
 #####*gll_t* - *Generic Linked List Type*
@@ -110,7 +112,7 @@ ___
 |`gll_node_t *prev` | _pointer to previous node_ |
 |`gll_node_t *next` | _pointer to next node_ |
 _ _ _
-#####__Functions__
+####__Functions__
 - - -
 <a name="anch_gll_init"></a>
 #####*gll_init* 
