@@ -10,7 +10,7 @@
 #define C_OK 0
 #define C_NOK -1
 
-static gll_node_t *gll_findNode(gll_t *, int);
+static gll_node_t *gll_findNode(gll_t *, unsigned int);
 static gll_node_t *gll_initNode(void *);
 
 /*  
@@ -47,7 +47,7 @@ static gll_node_t *gll_initNode(void *data)
  * in:        position
  * returns:   void pointer to data / NULL on failure
  */
-void *gll_get(gll_t *list, int pos) 
+void *gll_get(gll_t *list, unsigned int pos) 
 {
   gll_node_t *node = gll_findNode(list, pos);
   if(node != NULL) 
@@ -89,13 +89,13 @@ void *gll_last(gll_t *list)
  * in:        position
  * returns:   pointer to Node / NULL on failure
  */
-static gll_node_t *gll_findNode(gll_t *list, int pos) 
+static gll_node_t *gll_findNode(gll_t *list, unsigned int pos) 
 {
-  if(pos > list->size || pos < 0)
+  if(pos > list->size)
     return NULL;  
 
   gll_node_t *currNode;
-  int currPos;
+  unsigned int currPos;
   int reverse; 
    
   /* decide where to start iterating from (font or back of the list) */
@@ -126,9 +126,9 @@ static gll_node_t *gll_findNode(gll_t *list, int pos)
  * in:        position
  * returns:   0 on success, -1 on failure
  */
-int gll_add(gll_t *list, void *data, int pos) 
+int gll_add(gll_t *list, void *data, unsigned int pos) 
 {
-  if(pos > list->size || pos < 0)
+  if(pos > list->size)
     return C_NOK;
 
   gll_node_t *newNode;
@@ -177,7 +177,7 @@ int gll_add(gll_t *list, void *data, int pos)
  * in:        position in list
  * returns:   data previously stored at pos
  */
-void *gll_set(gll_t *list, void *data, int pos) 
+void *gll_set(gll_t *list, void *data, unsigned int pos) 
 {
   gll_node_t *currNode = gll_findNode(list, pos);
 
@@ -243,7 +243,7 @@ int gll_pushBack(gll_t *list, void *data)
  * in:        pointer to data
  * returns:   0 on success, -1 on failure
  */
-void *gll_remove(gll_t *list, int pos) 
+void *gll_remove(gll_t *list, unsigned int pos) 
 {
   gll_node_t *currNode = gll_findNode(list, pos);
   void *data = NULL;
