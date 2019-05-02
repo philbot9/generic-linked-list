@@ -26,18 +26,18 @@ typedef struct {
 gll_t *gll_init();
 
 /*  get/find functions */
-void *gll_get(gll_t *, unsigned int);
+void *gll_get(gll_t *, int);
 void *gll_first(gll_t *);
 void *gll_last(gll_t *);
 
 /*  add functions */
-int gll_add(gll_t *, void *, unsigned int);
-void *gll_set(gll_t *, void *, unsigned int);
+int gll_add(gll_t *, void *, int);
+void *gll_set(gll_t *, void *, int);
 int gll_push(gll_t *, void *);
 int gll_pushBack(gll_t *, void *);
 
 /*  remove functions */
-void *gll_remove(gll_t *, unsigned int);
+void *gll_remove(gll_t *, int);
 void *gll_pop(gll_t *);
 void *gll_popBack(gll_t *);
 
