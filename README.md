@@ -2,13 +2,14 @@ Generic Doubly Linked List
 =================
 A doubly linked list implementation in C. The list stores (void) pointers to the data. The actual data is never copied, modified or deleted in this implementation. This allows for the same data to be stored in multiple different lists.
 
-###Features
+### Features
 * Fast Stack operations (push/pop)
 * Fast Queue operations (pushBack/pop)
 * Fast Deque operations (push/pushBack and pop/popBack)
 * Forward/Backward iteration with function parameter
 
-###Performance
+### Performance
+
 | Function | Running Time |
 |---|---|
 |gll_get / gll_set | O(1 + min{size-i, i} ) |
@@ -17,7 +18,8 @@ A doubly linked list implementation in C. The list stores (void) pointers to the
 |gll_pop / gll_popBack| O(1) |
 |gll_push / gll_pushBack| O(1) |
 _ _ _
-######Performance Test
+
+###### Performance Test
 
 ```
 Number of Nodes: 10000000
@@ -50,21 +52,22 @@ Number of Nodes: 10000000
 
 ```
 
-###Usage
-######Library
+### Usage
+###### Library
+
 ```
 make
 make install
 make uninstall
 ```
 
-######Tests
+###### Tests
 ```
 make tests
 ./tests
 ```
 
-######Performance Tests
+###### Performance Tests
 ```
 make performance
 ./performance
@@ -73,12 +76,13 @@ make performance
 
 
 
-###API
+### API
 
-* Types
+ **Types**
  * [gll_t - Generic Linked List Type](#anch_gll_t)
  * [gll_node_t - List Node Type](#anch_gll_node_t)
-* Functions
+ 
+**Functions**
  * [gll_init](#anch_gll_init)
  * [gll_get](#anch_gll_get)
  * [gll_set](#anch_gll_set)
@@ -96,30 +100,31 @@ make performance
  * [gll_destroy](#anch_gll_destroy)
 
 
-####__Types__
+#### __Types__
 ---
 <a name="anch_gll_t"></a>
-#####*gll_t* - *Generic Linked List Type*
+##### *gll_t* - *Generic Linked List Type*
 
 | *Type & Name* |  *Description* |
 |-----|-----|
-|`unsigned int size` | _number of elements_ |
+|`int size` | _number of elements_ |
 |`gll_node_t *first`|  _pointer to head node_ |
 |`gll_node_t *last`| _pointer to tail node_ |
 ___
 
 <a name="anch_gll_node_t"></a>
-#####*gll_node_t* - *List Node Type*
+##### *gll_node_t* - *List Node Type*
+
 | *Type & Name* |  *Description* |
 |-----|-----|
 |`void *data` | _pointer to data stored at node_ |
 |`gll_node_t *prev` | _pointer to previous node_ |
 |`gll_node_t *next` | _pointer to next node_ |
 _ _ _
-####__Functions__
+#### __Functions__
 - - -
 <a name="anch_gll_init"></a>
-#####*gll_init* 
+##### *gll_init* 
 Allocates and initializes a new list.
 
 |Prototype:|`gll_t *gll_init()`|
@@ -128,7 +133,7 @@ Allocates and initializes a new list.
 ___
 
 <a name="anch_gll_get"></a>
-#####*gll_get*
+##### *gll_get*
 Gets the pointer to the data stored at the node in an arbitrary position. Returns NULL if position does not exist.
 
 |Prototype:|`void *gll_get(gll_t *list, int position)`|
@@ -140,7 +145,7 @@ Gets the pointer to the data stored at the node in an arbitrary position. Return
 ___
 
 <a name="anch_gll_set"></a>
-#####*gll_set*
+##### *gll_set*
 Sets the data pointer of a node at an arbitrary position. Returns pointer that was previously stored at that node or NULL if position does not exist.
 
 |Prototype:|`void *gll_get(gll_t *list, int position)`|
@@ -152,7 +157,7 @@ ___
 
 
 <a name="anch_gll_first"></a>
-#####*gll_first*
+##### *gll_first*
 Gets the pointer to the data at the head of the list (position 0). Returns NULL if list is empty.
 
 |Prototype:|`void *gll_last(gll_t *list)`|
@@ -162,7 +167,7 @@ Gets the pointer to the data at the head of the list (position 0). Returns NULL 
 ___
 
 <a name="anch_gll_last"></a>
-#####*gll_last*
+##### *gll_last*
 Gets the pointer to the data stored at the tail of the list (last position). Returns NULL if list is empty.
 
 |Prototype:|`void *gll_last(gll_t *list)`|
@@ -172,10 +177,10 @@ Gets the pointer to the data stored at the tail of the list (last position). Ret
 ___
 
 <a name="anch_gll_add"></a>
-#####*gll_add*
+##### *gll_add*
 Adds a new element at an arbitrary position. Returns -1 if unsuccessful.
 
-|Prototype:|`int gll_add(gll_t *list, void *data, int postion)`|
+|Prototype:|`int gll_add(gll_t *list, void *data, int position)`|
 |-----|-----|
 | ___list___ | _pointer to list to add data to_|
 | ___data___ | _pointer to data to be stored_ |
@@ -184,7 +189,7 @@ Adds a new element at an arbitrary position. Returns -1 if unsuccessful.
 ___
 
 <a name="anch_gll_push"></a>
-#####*gll_push*
+##### *gll_push*
 Adds a new element at the head of the list (position 0).
 
 |Prototype:|`int gll_push(gll_t *list, void *data)`|
@@ -195,7 +200,7 @@ Adds a new element at the head of the list (position 0).
 ___
 
 <a name="anch_gll_pushBack"></a>
-#####*gll_pushBack*
+##### *gll_pushBack*
 Adds a new element at the tail of the list (last position).
 
 |Prototype:|`int gll_pushBack(gll_t *list, void *data)`|
@@ -206,7 +211,7 @@ Adds a new element at the tail of the list (last position).
 ___
 
 <a name="anch_gll_remove"></a>
-#####*gll_remove*
+##### *gll_remove*
 Removes an element at an arbitrary position. Returns the pointer to the data stored at the removed node, or NULL if unsuccessful.
 
 |Prototype:|`int gll_remove(gll_t *list, int position)`|
@@ -218,7 +223,7 @@ ___
 
 
 <a name="anch_gll_pop"></a>
-#####*gll_pop*
+##### *gll_pop*
 Removes the head of the list (position 0) and return the pointer stored at that position. Returns NULL if list is empty.
 
 |Prototype:|`void *gll_pop(gll_t *list)`|
@@ -229,7 +234,7 @@ ___
 
 
 <a name="anch_gll_popBack"></a>
-#####*gll_popBack*
+##### *gll_popBack*
 Removes the tail of the list (last position) and return the pointer stored at that position. Returns NULL if list is empty.
 
 |Prototype:|`void *gll_popBack(gll_t *list)`|
@@ -239,7 +244,7 @@ Removes the tail of the list (last position) and return the pointer stored at th
 ___
 
 <a name="anch_gll_each"></a>
-#####*gll_each*
+##### *gll_each*
 Iterates over the entire list from beginning to end and calls the specified function with each element as a parameter. The function must be of return type void and take a void pointer (void *) parameter.
 
 |Prototype:|`void gll_each(gll_t *list, void (*function)(void *))`|
@@ -249,7 +254,7 @@ Iterates over the entire list from beginning to end and calls the specified func
 ___
 
 <a name="anch_gll_eachReverse"></a>
-#####*gll_eachReverse*
+##### *gll_eachReverse*
 Iterates over the entire list from end to beginning and calls the specified function with each element as a parameter. The function must be of return type void and take a void pointer (void *) parameter.
 
 |Prototype:|`void gll_eachReverse(gll_t *list, void (*function)(void *))`|
@@ -259,7 +264,7 @@ Iterates over the entire list from end to beginning and calls the specified func
 ___
 
 <a name="anch_gll_clear"></a>
-#####*gll_clear*
+##### *gll_clear*
 Clears the entire list and deallocates all **nodes**. The data that is referenced by each node is not touched.
 
 |Prototype:|`void *gll_clear(gll_t *list)`|
@@ -268,7 +273,7 @@ Clears the entire list and deallocates all **nodes**. The data that is reference
 ___
 
 <a name="anch_gll_destroy"></a>
-#####*gll_destroy*
+##### *gll_destroy*
 Clears the list and deallocates all list-related memory. The data referenced by each node is not touched.
 
 |Prototype:|`void *gll_destroy(gll_t *list)`|
