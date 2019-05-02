@@ -16,7 +16,7 @@ typedef struct node_t {
  * Generic Linked List Type: gll_t
  */
 typedef struct {
-  unsigned int size;
+  int size;
   gll_node_t *first;
   gll_node_t *last;
 } gll_t;
