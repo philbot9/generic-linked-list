@@ -6,6 +6,10 @@
 /*
  * Node Type: gll_node_t struct
  */
+
+#ifndef GLL_H
+#define GLL_H
+
 typedef struct node_t {
   void *data;
   struct node_t *prev;
@@ -49,3 +53,4 @@ void gll_eachReverse(gll_t *, void (*f)(void *));
 void gll_clear(gll_t *);
 void gll_destroy(gll_t *);
 
+#endif //GLL_H
