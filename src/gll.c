@@ -5,7 +5,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "gll.h"
+#include "./gll.h"
 
 #define C_OK 0
 #define C_NOK -1
